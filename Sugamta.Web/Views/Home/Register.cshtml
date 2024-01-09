@@ -1,0 +1,179 @@
+﻿@model Sugamta.Web.Models.UserEntity
+
+<style>
+    .login {
+        min-height: 100vh;
+    }
+
+    .bg-image {
+        background-image: url('https://source.unsplash.com/WEQbe2jBg40/600x1200');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .login-heading {
+        font-weight: 300;
+    }
+
+    .btn-login {
+        font-size: 0.9rem;
+        letter-spacing: 0.05rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .password-strength-indicator{
+        font-size: 12px;
+        display: inline-block;
+        height: 15px;
+        min-width: 20%;
+        text-align: center;
+        transition: 1s;
+        margin: 2px 0;
+        color: #fff;
+    }
+
+    .password-strength-indicator.very-weak{
+        background: #cf0000;
+        width: 20%;
+        padding-bottom: 20px;
+    }
+
+        .password-strength-indicator.weak {
+            background: #f6891f;
+            width: 40%;
+            padding-bottom: 20px;
+        }
+
+        .password-strength-indicator.mediocre {
+            background: #eeee00;
+            width: 60%;
+            padding-bottom: 20px;
+        }
+
+        .password-strength-indicator.strong {
+            background: #99ff33;
+            width: 80%;
+            padding-bottom: 20px;
+        }
+
+        .password-strength-indicator.very-strong {
+            background: #22cf00;
+            width: 100%;
+            padding-bottom: 20px;
+        }
+</style>
+
+<script src="~/js/jquery.passwordstrength.js"></script>
+
+<div class="container-fluid ps-md-0">
+    <div class="row g-0">
+        <div class="col-md-8 col-lg-6">
+            <div class="login d-flex align-items-center py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-9 col-lg-8 mx-auto">
+                            <!-- Sign Up Form -->
+                            <form asp-controller="Home" asp-action="AddUser" method="post">
+                                <div class="text-danger"></div>
+                                
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
+                                    <label for="floatingInput">Email address</label>
+                                </div>  
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Name" type="text" class="form-control" id="floatingInput" placeholder="name" required>
+                                    <label for="floatingInput">Name</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input asp-for="Password" type="password" id="password" class="form-control" id="floatingInput" placeholder="Password" required>
+                                    <label for="floatingInput">Password</label>
+
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select asp-for="RoleId" type="text" class="form-control form-select form-select-sm " id="floatingInput" aria-label="small select example" required>
+
+                                        <option selected></option>
+                                        <option value="1">Admin</option>
+                                        <option value="2">Agent</option>
+                                        <option value="3">Investor</option>
+                                        <option value="4">Client</option>
+                                        <option value="4">Agency</option>
+                                    </select>
+                                    <label for="floatingInput">Role Type</label>
+
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" value="" id="rememberPasswordCheck">
+                                    <label class="form-check-label" for="rememberPasswordCheck">
+                                        Remember password
+                                    </label>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Sign up</button>
+                                    <div class="text-center">
+                                        <button class="small" style="background: none; border: none; color: #0a58ca;" onclick="loadLogin();">Already have an Account? Login!</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+    </div>
+</div>
+
+<script src="~/js/test.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $("#password").passwordStrength();
+    });
+</script>
+
+@if (TempData["UserExist"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "positionClass": "toast-top-right", // Adjust the position as needed
+            "preventDuplicates": true,
+            "closeButton": true,
+            "timeOut": 3000
+        };
+        toastr.error('@TempData["UserExist"]', { "iconClass": 'toast-error' });
+    </script>
+}
+
+@if (TempData["RegisterErrorMessage"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "positionClass": "toast-top-right", // Adjust the position as needed
+            "preventDuplicates": true,
+            "closeButton": true,
+            "timeOut": 3000
+        };
+        toastr.error('@TempData["RegisterErrorMessage"]', { "iconClass": 'toast-error' });
+    </script>
+}
+
+@if (TempData["Message"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "positionClass": "toast-top-right", // Adjust the position as needed
+            "preventDuplicates": true,
+            "closeButton": true,
+            "timeOut": 3000
+        };
+        toastr.error('@TempData["Message"]', { "iconClass": 'toast-error' });
+    </script>
+}

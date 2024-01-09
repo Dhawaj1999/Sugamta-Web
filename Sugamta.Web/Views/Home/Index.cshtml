@@ -1,0 +1,30 @@
+﻿@using System.Data
+@model DataTable
+
+@{
+	ViewData["Title"] = "Fetching Data from WebAPI";
+}
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>UserID</th>
+			<th>Email</th>
+			<th>Name</th>			
+			<th>Password</th>
+			<th>RoleType</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach(DataRow row in Model.Rows)
+		{
+			<tr>
+				<td>@row["UserID"]</td>
+				<td>@row["Email"]</td>
+				<td>@row["Name"]</td>				
+				<td>@row["Password"]</td>
+				<td>@row["RoleType"]</td>
+			</tr>
+		}
+	</tbody>
+</table>

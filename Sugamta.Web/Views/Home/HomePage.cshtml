@@ -1,0 +1,495 @@
+﻿@model Sugamta.Web.Models.UserDetailsCreateOrUpdateDto
+@{
+    var userEmail = Context.Session.GetString("UserEmail");
+}
+
+<script>
+    var userEmail = '@userEmail';
+</script>
+
+
+<style>
+    body {
+        background-color: #fbfbfb;
+    }
+
+    media (min-width: 991.98px) {
+        main
+    {
+        padding-left: 240px;
+    }
+
+    }
+
+    /* Sidebar */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        padding: 58px 0 0; /* Height of navbar */
+        box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+        width: 240px;
+        z-index: 600;
+    }
+
+    .navbar {
+        box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+    }
+
+    media (max-width: 991.98px) {
+        .sidebar
+
+    {
+        width: 100%;
+    }
+
+    }
+
+    .sidebar .active {
+        border-radius: 5px;
+        box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
+    }
+
+    .sidebar-sticky {
+        position: relative;
+        top: 0;
+        height: calc(100vh - 48px);
+        padding-top: 0.5rem;
+        overflow-x: hidden;
+        overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    }
+
+    svg {
+        width: 170px;
+        height: 40px;
+    }
+
+    floating > .form-control:not(:placeholder-shown) {
+        /* padding-top: -0.395rem !important;*/
+         padding-bottom: 0.625rem !important;
+    }
+
+    .form-control {
+        height: 38px !important
+    }
+
+    .form-floating > .form-control {
+        padding: 0 0 0 11px !important;
+        line-height: 2.25 !important;
+    }
+
+    .modal-dialog {
+        width: 897px;
+    }
+
+    /* .form-floating > label {
+        padding: 8px 0.75rem !important;
+    } */
+
+    .form-floating input {
+        width: 65%;
+        margin-left: 150px;
+    }
+
+    .form-floating label {
+        margin-left: -14px;
+    }
+
+    /* Adjust the label styles if necessary */
+    .form-floating > label {
+        padding: 8px 0.75rem !important;
+    }
+
+    /* Additional styling for small screens if needed */
+    media (max-width: 576px) {
+        .form-floating input
+
+    {
+        width: fit-content margin-left: 0px;
+        /* Reset margin-left to 0 for small screens */
+    }
+
+    .form-floating > label {
+        margin-left: 0px;
+        /* Reset margin-left to 0 for small screens */
+    }
+
+    #copyButton:hover {
+        background-color: #45a049;
+    }
+
+    .icon {
+        margin-right: 5px;
+    }
+</style>
+
+<script src="~/js/Details.js"></script>
+<!--Main Navigation-->
+<header>
+    <!-- Sidebar -->
+    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
+        <div class="position-sticky">
+            <div class="list-group list-group-flush mx-3 mt-4">
+                <a href="#" class="list-group-item list-group-item-action py-2 ripple active dropdown-toggle" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa-solid fa-people-roof fa-fw me-3"></i><span>Agency</span><i class="bi bi-chevron-down float-end"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="#">Agency</a>
+                    <a class="dropdown-item" href="#">Offices</a>
+
+                    <button onclick="renderDetailPartialView();" class="dropdown-item">
+                        Agents
+                    </button>
+                    @*  <a class="dropdown-item" asp-controller="Agent" asp-action="GetAgent">Agents</a>*@
+                </div>
+
+                <a href="#" class="list-group-item list-group-item-action py-2 ripple">
+                    <i class="fa-solid fa-person fa-fw me-3"></i><span>Clients</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <!-- Sidebar -->
+    <!-- Navbar -->
+    <nav id="main-navbar" class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+            <!-- Toggle button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-mdb-toggle="collapse" data-bs-target="#sidebarMenu" data-mdb-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Brand -->
+            <svg width="737.1" height="181.0929383686649" viewBox="0 0 374.8947368421052 92.10526315789473" class="looka-1j8o68f"><defs id="SvgjsDefs1510"></defs><g id="SvgjsG1511" featurekey="nRdZyp-0" transform="matrix(1.9188596491228067,0,0,1.9188596491228067,0,0)" fill="#ffcd3c"><g xmlns="http://www.w3.org/2000/svg"><path d="M36,10.5L23.7,22.8c-0.4,0.4-0.4,1.1,0,1.5c0.4,0.4,1.1,0.4,1.5,0L37.5,12l3.7,0.5L48,5.7L43,5l-0.7-5l-6.9,6.9L36,10.5z"></path><path d="M42,14.5c1.5,2.8,2.4,6,2.4,9.5c0,11.2-9.1,20.3-20.3,20.3C12.8,44.3,3.7,35.2,3.7,24C3.7,12.8,12.8,3.7,24,3.7   c3.4,0,6.6,0.8,9.5,2.3l2.7-2.7C32.6,1.2,28.4,0,24,0C10.8,0,0,10.8,0,24c0,13.2,10.8,24,24,24c13.2,0,24-10.8,24-24   c0-4.4-1.2-8.6-3.3-12.2L42,14.5z"></path><path d="M33.4,10.3c-2.7-1.9-5.9-2.9-9.4-2.9C14.8,7.4,7.4,14.8,7.4,24c0,9.2,7.4,16.6,16.6,16.6S40.6,33.2,40.6,24   c0-3.5-1.1-6.7-2.9-9.4L35,17.3c1.2,2,1.9,4.3,1.9,6.7c0,7.1-5.8,12.9-12.9,12.9c-7.1,0-12.9-5.8-12.9-12.9   c0-7.1,5.8-12.9,12.9-12.9c2.5,0,4.8,0.7,6.7,1.9L33.4,10.3z"></path><path d="M24,18.5c0.4,0,0.8,0,1.1,0.1l2.9-2.9c-1.2-0.6-2.6-0.9-4-0.9c-5.1,0-9.2,4.1-9.2,9.2s4.1,9.2,9.2,9.2s9.2-4.1,9.2-9.2   c0-1.4-0.3-2.8-0.9-4l-2.9,2.9c0,0,0,0,0,0c0.1,0.4,0.1,0.7,0.1,1.1c0,3.1-2.5,5.5-5.5,5.5c-3.1,0-5.5-2.5-5.5-5.5   C18.5,20.9,20.9,18.5,24,18.5z"></path></g></g><g id="SvgjsG1512" featurekey="Q4qmbg-0" transform="matrix(3.4083188152940287,0,0,3.4083188152940287,115.36400852886341,-8.812563315647331)" fill="#111111"><path d="M3.48 13.24 c0 1.18 5 0.62 5 3.74 c0 2.04 -1.8 3.18 -4.04 3.18 c-1.42 0 -2.84 -0.7 -3.96 -1.82 l1.94 -1.94 c0.56 0.68 1.36 1.2 2.02 1.26 s1.22 -0.22 1.32 -0.52 c0.24 -0.76 -1.14 -0.8 -1.56 -0.92 c-1.58 -0.48 -3.42 -1.14 -3.42 -3.1 c0 -2.34 2.44 -3.14 3.66 -3.14 c1.4 0 2.82 0.64 3.96 1.8 l-1.92 1.92 c-0.52 -0.68 -1.42 -1.22 -2.04 -1.22 c-0.32 0 -0.96 0.12 -0.96 0.76 z M9.707708333333333 15.76 l0 -5.64 l2.96 0 l0 5.64 c0 1.52 0.42 2.16 1.56 2.16 c1.2 0 1.9 -0.64 1.9 -2.16 l0 -5.64 l2.96 0 l0 9.88 l-2.96 0 l0 -0.9 c-0.56 0.7 -1.78 1.06 -2.64 1.06 c-2.78 0 -3.78 -1.32 -3.78 -4.4 z M27.555416666666662 10.12 l2.96 0 l0 9.58 c0 2.92 -2.14 5.28 -5.22 5.28 c-1.7 0 -2.98 -0.78 -4.1 -2.02 l2.1 -1.9 c0.62 0.92 1.18 1.48 2 1.48 c1.4 0 2.24 -1.54 2.24 -3.22 c-0.36 0.48 -1.42 0.82 -2.04 0.82 c-2.88 0 -5 -2.16 -5 -5.08 s2.12 -5.1 5 -5.1 c0.68 0 1.74 0.36 2.06 0.82 l0 -0.66 z M25.695416666666663 17.92 c1.34 0 2.26 -1.54 2.26 -2.86 c0 -1.34 -0.9 -2.86 -2.26 -2.86 c-1.22 0 -2.24 1.28 -2.24 2.86 c0 1.56 1.02 2.86 2.24 2.86 z M34.483124999999994 13.04 l-2.2 -1.26 c1.1 -1.24 2.58 -1.82 4.12 -1.82 c2.96 0 4.16 1.62 4.16 3.14 l0 6.9 l-2.96 0 l0 -0.7 c-0.46 0.48 -1.28 0.84 -2.2 0.84 c-2.7 0 -3.74 -1.2 -3.74 -3.04 c0 -2.08 1.68 -3.48 4.4 -3.48 l1.54 0 c0 -0.74 -0.56 -1.22 -1.4 -1.22 c-0.86 0 -1.28 0.16 -1.72 0.64 z M37.603125 16.740000000000002 l0 -0.88 l-1.74 0 c-0.78 0 -1.36 0.54 -1.24 1.3 c0.08 0.54 0.56 0.76 1.24 0.76 c1.3 0 1.74 -0.74 1.74 -1.18 z M58.310833333333335 20 l-2.98 0 l0 -5.64 c0 -1.52 -0.42 -2.16 -1.54 -2.16 c-1.2 0 -1.9 0.64 -1.9 2.16 l0 5.64 l-2.98 0 l0 -5.64 c0 -1.52 -0.4 -2.16 -1.54 -2.16 c-1.2 0 -1.92 0.64 -1.92 2.16 l0 5.64 l-2.96 0 l0 -9.88 l2.96 0 l0 0.9 c0.7 -0.7 1.76 -1.04 2.7 -1.04 c1.4 0 2.3 0.52 2.94 1.34 c0.54 -0.66 1.7 -1.26 3.44 -1.34 c2.78 0 3.78 1.32 3.78 4.38 l0 5.64 z M63.61854166666667 15.8 c0 0.72 -0.02 1.92 1.08 1.92 c0.54 0 0.88 -0.22 1.26 -0.5 l0 2.44 c-0.46 0.26 -1.02 0.5 -1.62 0.5 c-2.54 0 -3.68 -1.08 -3.68 -4.36 l0 -3.24 l-1.1 0 l0 -2.44 l1.1 0 l0 -2.84 l2.96 0 l0 2.84 l2.34 0 l0 2.44 l-2.34 0 l0 3.24 z M70.06625000000001 13.04 l-2.2 -1.26 c1.1 -1.24 2.58 -1.82 4.12 -1.82 c2.96 0 4.16 1.62 4.16 3.14 l0 6.9 l-2.96 0 l0 -0.7 c-0.46 0.48 -1.28 0.84 -2.2 0.84 c-2.7 0 -3.74 -1.2 -3.74 -3.04 c0 -2.08 1.68 -3.48 4.4 -3.48 l1.54 0 c0 -0.74 -0.56 -1.22 -1.4 -1.22 c-0.86 0 -1.28 0.16 -1.72 0.64 z M73.18625 16.740000000000002 l0 -0.88 l-1.74 0 c-0.78 0 -1.36 0.54 -1.24 1.3 c0.08 0.54 0.56 0.76 1.24 0.76 c1.3 0 1.74 -0.74 1.74 -1.18 z"></path></g></svg>
+
+            <!-- Right links -->
+            <ul class="navbar-nav ms-auto d-flex flex-row">
+                <!-- Notification dropdown -->
+                @* <li class="nav-item dropdown">
+                <a class="nav-link me-3 me-lg-0 dropdown-toggle hidden-arrow"
+                href="#"
+                id="navbarDropdownMenuLink"
+                role="button"
+                data-mdb-toggle="dropdown"
+                aria-expanded="false">
+                <i class="fas fa-bell"></i>
+                <span class="badge rounded-pill badge-notification bg-danger">1</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                <a class="dropdown-item" href="#">Some news</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="#">Another news</a>
+                </li>
+                <li>
+                <a class="dropdown-item" href="#">Something else here</a>
+                </li>
+                </ul>
+                </li>
+                *@
+
+                
+
+                <!-- Avatar -->
+                <p id="copyTooltip" style=" visibility: hidden;background-color: black;color: white;text-align: center;border-radius: 5px;padding: 5px;margin-bottom: 0;">copied</p>
+                <button id="copyButton" style="background: none; border: none; text-align: center; text-decoration: none;
+    display: inline-block; font-size: 20px; border: none; cursor: pointer; border-radius: 50%;" onclick="copyToClipboard()">
+                    <i class="fas fa-share-nodes" title="Share Register link"></i>
+                </button>
+                @* <div id="copyTooltip" ></div>
+                <button id="copyButton" style="background: none; border: none; text-align: center; text-decoration: none;
+                    display: inline-block; font-size: 20px; border: none; cursor: pointer; border-radius: 50%;">
+                    <i class="fa-solid fa-share-nodes"></i>
+                </button> *@
+                <input type="text" id="registrationLink" value="" style="position: absolute; left: -9999px;">
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" data-mdb-toggle="dropdown" aria-expanded="false">
+                       @*  <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img (31).webp" class="rounded-circle" height="22" alt="Avatar" loading="lazy" /> *@
+                        <img src="" id="navProfileImage" class="rounded-circle" height="22" alt="" loading="lazy" />
+                    </a>
+                    @* <ul class="dropdown-menu dropdown-menu-end"
+                    aria-labelledby="navbarDropdownMenuLink">
+                    <li>
+                    <a class="dropdown-item" href="#">My profile</a>
+                    </li>
+                    <li>
+                    <a class="dropdown-item" href="#">Settings</a>
+                    </li>
+                    <li>
+                    <a class="dropdown-item" href="#">Logout</a>
+                    </li>
+                    </ul> *@
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+
+                        <button class="dropdown-item" onclick="openProfilePopup();">My profile</button>
+
+
+                        <a class="dropdown-item" href="#">Settings</a>
+
+                        <a class="dropdown-item" asp-controller="Home" asp-action="Index">Logout</a>
+
+                    </div>
+                </li>
+             </nav>
+    <!-- Add your popup content here -->
+    <div id="profilePopup" class="modal fade profileform">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content pl-4 pr-4">
+                <!-- Popup content goes here -->
+                <form asp-controller="Home" asp-action="AddOrUpdateUserDetails" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title">My Profile</h5>
+                    <button type="button" class="close" style="color: red;" data-dismiss="modal" onclick="closeModal1()">&times;</button>
+                </div>
+                <div class="row">                   
+                    <div class="modal-body col-9">
+                        <!-- Your profile content goes here -->
+                        
+                                
+                        
+                        <div class="form-floating mb-2">
+                                <label hidden for="floatingInput">Email</label>
+                                <input id="emailInput" asp-for="Email" hidden type="email" class="form-control input-sm" id="floatingInput" placeholder="examp@gmail.com" oninput="clearPlaceholder()">
+                           
+                        </div>
+                       
+                        <div class="form-floating mb-2">
+                                <label for="floatingInput">Address</label>
+                                <input id="addressInput" asp-for="Address" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">                           
+                        </div>
+                        <div class="form-floating mb-2">
+                                <label for="floatingInput">City</label>
+                                <input id="cityInput" asp-for="City" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">                           
+                        </div>
+
+                        <div class="form-floating mb-2">
+                                <label for="floatingInput">State</label>
+                                <input id="stateInput" asp-for="State" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">                            
+                        </div>
+
+                        <div class="form-floating mb-2">
+                                <label for="floatingInput">Country</label>
+                                <input id="countryInput" asp-for="Country" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">                            
+                        </div>
+
+                         <div class="form-floating mb-2">
+                                <label for="floatingInput">Phone Number</label>
+                                <input id="phoneInput" asp-for="PhoneNumber" type="number" class="form-control input-sm" id="floatingInput" placeholder="12345">                            
+
+                        </div>
+                        <div class="form-floating mb-2">
+                                <label for="floatingInput">Alternate PhoneNo</label>
+                                <input id="alternatePhoneInput" asp-for="AlternatePhoneNumber" type="number" class="form-control input-sm" id="floatingInput" placeholder="123..">
+                           
+                        </div>
+
+                            <div class="form-floating mb-2">
+                                <label>Profile Picture:</label>
+                                <input type="file" id="formFile" class="form-control" asp-for="formFile">
+                            </div>
+
+                        <button type="submit" class="btn btn-lg btn-primary btn-login text-uppercase mb-2" style="padding: 6px 18px 5px 18px;
+                        margin-top: 8px;
+                        font-size: 15px;
+                        font-family: sans-serif;
+                        font-weight: lighter;">
+                            Save
+                        </button>
+                        <button class="btn btn-lg btn-outline-dark text-uppercase mb-2" type="button" style="padding: 6px 18px 5px 18px;
+                        margin-top: 8px;
+                        font-size: 15px;
+                        font-family: sans-serif;
+                        font-weight: lighter;" onclick="closeModal1()">
+                            Cancel
+                        </button>
+                    </div>
+                    
+                    <div class="col-3">
+                            <img asp-formaction="" id="userImage" width="100%" style="margin-top: 20px;height: 160px;border: solid;" />
+                    </div>
+               
+                </div>
+              </form>
+            </div>
+        </div>
+    </div>
+
+                 
+
+
+            </ul>
+        </div>
+        <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
+</header>
+<!--Main Navigation-->
+<!--Main layout-->
+<main style="margin-top: 58px; margin-left: 250px;">
+    <div class="container pt-4">
+        <div id="foo-view" data-url="@Url.Action(action: "GetAgent", controller: "Agent")"></div>
+        <div id="add-view" data-url="@Url.Action(action: "InsertAgent", controller: "Agent")"></div>
+        <div id="update-view" data-url="@Url.Action(action: "UpdateAgent", controller: "Agent")"></div>
+        <div id="delete-view" data-url="@Url.Action(action: "DeleteAgent", controller: "Agent")"></div>
+    </div>
+</main>
+<!--Main layout-->
+<!--Open And Close onclick model popup of My Profile-->
+<script>
+    function copyToClipboard() {
+        $.ajax({
+            url: '/Home/GenerateRegistrationLink',
+            type: 'GET',
+            success: function (data) {
+                var registrationLink = data.registrationLink;
+                $('#registrationLink').val(registrationLink);
+
+                var copyText = document.getElementById("registrationLink");
+                copyText.select();
+                copyText.setSelectionRange(0, 99999);
+
+                try {
+                    document.execCommand("copy");
+                    var tooltip = document.getElementById("copyTooltip");
+                    tooltip.style.visibility = "visible";
+
+                    setTimeout(function () {
+                        tooltip.style.visibility = "hidden";
+                    }, 1000);
+                } catch (err) {
+                    console.error('Unable to copy to clipboard', err);
+                }
+            },
+            error: function (error) {
+                console.error('Failed to retrieve and display image:', error);
+            }
+        });
+    }
+
+
+    $(document).ready(function () {
+        $("#copyButton").click(function () {
+            copyToClipboard();
+        });
+        displayImageOnNav();
+    });
+
+    function displayImageOnNav() {
+        $.ajax({
+            url: '/Home/GetProfileImage', 
+            type: 'GET',
+            data: { email: userEmail },
+            success: function (data) {
+                $('#navProfileImage').attr('src', 'data:image/png;base64,' + data);
+            },
+            error: function (error) {
+                console.error('Failed to retrieve and display image:', error);
+            }
+        });
+    }
+
+    function displayImage() {
+        $.ajax({
+            url: '/Home/GetProfileImage', 
+            type: 'GET',
+            data: { email: userEmail },
+            success: function (data) {
+                $('#userImage').attr('src', 'data:image/png;base64,' + data);
+                $('#navProfileImage').attr('src', 'data:image/png;base64,' + data);
+            },
+            error: function (error) {
+                console.error('Failed to retrieve and display image:', error);
+            }
+        });
+    }
+
+    function GetUserDetails() {
+        $.ajax({
+            url: '/Home/GetUserDetails',
+            type: 'GET',
+            dataType: 'json',
+            data: { email: userEmail }, 
+            success: function (data) {
+                $('#emailInput').val(data.email);
+                $('#addressInput').val(data.address);
+                $('#cityInput').val(data.city);
+                $('#stateInput').val(data.state);
+                $('#countryInput').val(data.country);
+                $('#phoneInput').val(data.phoneNumber);
+                $('#alternatePhoneInput').val(data.alternatePhoneNumber);
+            },
+            error: function (error) {
+                console.log("Error: " + error);
+            }
+        });
+    }
+
+    function openProfilePopup() {
+        GetUserDetails();
+        displayImage();
+        $('#profilePopup').modal('show');
+    }
+
+    //for click close the modal popup
+    function closeModal1() {
+        // Assuming you're using jQuery for Bootstrap modal
+        $('#profilePopup').modal('hide');
+    }
+
+
+
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+@if (TempData["SaveMessage"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "positionClass": "toast-top-right", // Adjust the position as needed
+            "preventDuplicates": true,
+            "closeButton": true,
+            "timeOut": 3000
+        };
+        toastr.success('@TempData["SaveMessage"]', { "iconClass": 'toast-success' });
+    </script>
+}
+
+@if (TempData["UpdateMessage"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "positionClass": "toast-top-right", // Adjust the position as needed
+            "preventDuplicates": true,
+            "closeButton": true,
+            "timeOut": 3000
+        };
+        toastr.success('@TempData["UpdateMessage"]', { "iconClass": 'toast-success' });
+    </script>
+}
+
+@if (TempData["LoginSuccess"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "positionClass": "toast-top-right", // Adjust the position as needed
+            "preventDuplicates": true,
+            "closeButton": true,
+            "timeOut": 3000
+        };
+        toastr.success('@TempData["LoginSuccess"]',  { "iconClass": 'toast-success' });
+    </script>
+}

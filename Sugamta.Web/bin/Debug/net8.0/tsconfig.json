@@ -1,0 +1,15 @@
+﻿{
+    "compilerOptions": {
+        "noImplicitAny": false,
+        "noEmitOnError": true,
+        "removeComments": false,
+        "sourceMap": true,
+        "target": "ES2015",
+        "rootDir": "./Scripts",
+        "outDir": "wwwroot/js"
+    },
+    "exclude": [
+        "node_modules",
+        "wwwroot"
+    ]
+}

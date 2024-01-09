@@ -1,0 +1,132 @@
+﻿@model Sugamta.Web.Models.UserDTOs.UserOtpDto
+
+@* <h2>Verify OTP</h2> *@
+@* <p>Please enter the OTP sent to your email.</p> *@
+
+@* <p>Email: @ViewData["Email"]</p> *@
+
+@* <img src="data:image/png;base64, @ViewData["QrCode"]" alt="QR Code" /> *@
+
+@* <form method="post" asp-action="VerifyOtp">
+    <label for="enteredOtp">Enter OTP:</label>
+    <input asp-for="OTP" type="text" name="enteredOtp" required />
+    <br />
+    <input asp-for="Email" type="hidden" name="email" value="@ViewData["Email"]" />
+    <input type="submit" value="Verify" />
+</form> *@
+
+<style>
+    .login {
+        min-height: 100vh;
+    }
+
+    .bg-image {
+        background-image: url('https://source.unsplash.com/WEQbe2jBg40/600x1200');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .login-heading {
+        font-weight: 300;
+    }
+
+    .btn-login {
+        font-size: 0.9rem;
+        letter-spacing: 0.05rem;
+        padding: 0.75rem 1rem;
+    }
+</style>
+
+<div class="container-fluid ps-md-0">
+    <div class="row g-0">
+        <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+        <div class="col-md-8 col-lg-6">
+            <div class="login d-flex align-items-center py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-9 col-lg-8 mx-auto">
+                            <h3 class="login-heading mb-4">Please enter the OTP sent to your email!</h3>
+
+                            <!-- Sign In Form -->
+                            <form asp-controller="Home" asp-action="VerifyOtp" method="post">
+                                <p hidden>Email: @ViewData["Email"]</p>
+                                <input asp-for="Email" type="hidden" name="email" value="@ViewData["Email"]" />
+                                <div class="form-floating mb-3">
+                                    <input asp-for="OTP" type="text" name="enteredOtp" class="form-control" id="floatingPassword" placeholder="123123">
+                                    <label for="enteredOtp" for="floatingInput">OTP</label>
+                                </div>
+
+                                <div class="d-grid">
+                                    <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Verify OTP</button>
+                                   
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/test.js"></script>
+
+@if (TempData["Errormessage"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "positionClass": "toast-top-right", // Adjust the position as needed
+            "preventDuplicates": true,
+            "closeButton": true,
+            "timeOut": 3000
+        };
+        toastr.error('@TempData["Errormessage"]', { "iconClass": 'toast-error' });
+    </script>
+}
+
+@if (TempData["UserNotExist"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "positionClass": "toast-top-right", // Adjust the position as needed
+            "preventDuplicates": true,
+            "closeButton": true,
+            "timeOut": 3000
+        };
+        toastr.error('@TempData["UserNotExist"]', { "iconClass": 'toast-error' });
+    </script>
+}
+
+@if (TempData["Exception"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "positionClass": "toast-top-right", // Adjust the position as needed
+            "preventDuplicates": true,
+            "closeButton": true,
+            "timeOut": 3000
+        };
+        toastr.error('@TempData["Exception"]', { "iconClass": 'toast-error' });
+    </script>
+}
+
+@if (TempData["RegisterMessage"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "positionClass": "toast-top-right", // Adjust the position as needed
+            "preventDuplicates": true,
+            "closeButton": true,
+            "timeOut": 3000
+        };
+        toastr.success('@TempData["RegisterMessage"]',  { "iconClass": 'toast-success' });
+    </script>
+}
