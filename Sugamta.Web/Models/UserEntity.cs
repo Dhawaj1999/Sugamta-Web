@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.Data;
 
 namespace Sugamta.Web.Models
 {
@@ -14,10 +15,12 @@ namespace Sugamta.Web.Models
 	
 		public string Password { get; set; }
 
-        public int RoleId { get; set; }
-		public DateTime CreationDate { get; set; }
+       public int RoleId { get; set; }
+        public string RoleType { get; set; }
+        public DateTime CreationDate { get; set; }
 		public string CreatedBy { get; set; }
 		public int IsDeleted { get; set; } = 0;
         public string? OTP { get; set; }
+		//public Role Roles { get; set; }
     }
 }

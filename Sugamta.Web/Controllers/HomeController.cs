@@ -13,6 +13,9 @@ using System.Net.Http.Formatting;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
+using Sugamta.Web.Services;
+using Sugamta.Web.Models.UserDTOs;
+
 namespace Sugamta.Web.Controllers
 {
     public class HomeController : Controller
@@ -609,11 +612,6 @@ namespace Sugamta.Web.Controllers
             }
         }
 
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

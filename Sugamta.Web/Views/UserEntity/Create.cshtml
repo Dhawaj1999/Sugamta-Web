@@ -1,0 +1,95 @@
+﻿
+ @model Sugamta.Web.Models.UserEntity
+
+@{
+    ViewData["Title"] = "Create";
+}
+@* <style>
+    form input{
+        width:;
+    }
+</style> *@
+
+<form id="createUserForm" asp-action="Create" asp-controller="UserEntity" method="post">
+   @*  <div class="form-group">
+        <label for="floatingInput">UserID:</label>
+        <input id="userIdInput" asp-for="UserID" type="email" class="form-control" id="floatingInput" placeholder="" />
+
+    </div> *@
+    <div class="form-group">
+        <label for="floatingInput">Email:</label>
+        <input id="emailInput1" asp-for="Email" type="email" class="form-control" id="floatingInput" placeholder="examp@gmail.com"style="width:355px;margin-left:111px;margin-top:-37px" />
+
+    </div>
+    <div class="form-group">
+        <label for="floatingInput">Name:</label>
+        <input id="nameInput" asp-for="Name" type="text" class="form-control" placeholder="name" style="width:355px;margin-left:111px;margin-top:-37px" />
+    </div>
+    <div class="form-group">
+        <label for="floatingInput">Password:</label>
+        <input id="passwordInput" asp-for="Password" type="password" class="form-control" placeholder="" style="width:355px;margin-left:111px;margin-top:-37px" />
+
+    </div>
+    <div class="form-group">
+        <label for="floatingInput">RoleType:</label>
+        <select asp-for="RoleType" type="text" class="form-control form-select form-select-sm " id="floatingInput" aria-label="small select example" style="width:355px;margin-left:111px;margin-top:-37px">
+
+            <option selected></option>
+            <option value="1">Admin</option>
+            <option value="2">Agent</option>
+            <option value="3">Investor</option>
+            <option value="4">Client</option>
+            <option value="4">Agency</option>
+        </select>
+       @*  <input id="roleIdInput" asp-for="RoleId" type="number" class="form-control" placeholder="012.." style="width:355px;margin-left:111px;margin-top:-37px" /> *@
+
+    </div>
+    <div class="form-group">
+        <label for="floatingInput">CreationDate:</label>
+        <input id="creationDateInput" asp-for="CreationDate" type="date" class="form-control" placeholder="mm/dd/yyyy" style="width:355px;margin-left:111px;margin-top:-37px" />
+
+    </div>
+    
+    <div class="form-group">
+        <label for="floatingInput">IsDeleted:</label>
+        <input id="isDeletedInput" asp-for="IsDeleted" type="number" class="form-control" placeholder="012.." style="width:355px;margin-left:111px;margin-top:-37px" />
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="submitCreateUserForm()" >Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeCreateModal()" style="margin-right:299px">Cancel</button>
+       
+    </div>
+</form>
+
+<script>
+  
+  
+    function submitCreateUserForm() {
+        $.ajax({
+            url: '/UserEntity/Create',
+            type: 'POST',
+            data: $('#createUserForm').serialize(),
+            success: function (data) {
+                $('#UserDetailsTable').html(data);
+                
+            },
+            error: function () {
+               
+            }
+                
+        });
+
+        
+        closeCreateModal();
+    }
+
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

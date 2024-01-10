@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Sugamta.Web",
+    "\\Sugamta.Web\\Views",
+    "\\Sugamta.Web\\Views\\Home"
   ],
-  "SelectedNode": "\\Sugamta.Web.sln",
+  "SelectedNode": "\\Sugamta.Web\\Views\\Home\\HomePage.cshtml",
   "PreviewInSolutionExplorer": false
 }

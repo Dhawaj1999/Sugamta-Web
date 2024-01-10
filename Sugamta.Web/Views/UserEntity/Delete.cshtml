@@ -1,0 +1,13 @@
+﻿
+
+@model Sugamta.Web.Models.UserEntity
+
+@{
+    ViewData["Title"] = "Delete User";
+}
+
+<h1>Delete</h1>
+
+    <div id="deleteModalContainer">
+        @await Html.PartialAsync("_DeleteUserModal",Model)
+    </div>

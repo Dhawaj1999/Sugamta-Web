@@ -1,0 +1,23 @@
+﻿
+ @model Sugamta.Web.Models.UserEntity
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <div id="editUserModalContainer">
+            @await Html.PartialAsync("_EditUserEntity")
+        </div>
+    </div>
+</div>
+@* @section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} 
+ *@
+

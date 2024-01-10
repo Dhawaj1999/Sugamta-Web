@@ -1214,19 +1214,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\RAX\\.nuget\\packages\\": {}
+    "C:\\Users\\HP\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\RAX\\Desktop\\NewAPIand WEb\\Sugamta3Jan\\SugamtaWebMain\\Sugamta.Web\\Sugamta.Web.csproj",
+      "projectUniqueName": "C:\\Users\\HP\\Desktop\\SugamtaWebMain\\Sugamta.Web\\Sugamta.Web.csproj",
       "projectName": "Sugamta.Web",
-      "projectPath": "C:\\Users\\RAX\\Desktop\\NewAPIand WEb\\Sugamta3Jan\\SugamtaWebMain\\Sugamta.Web\\Sugamta.Web.csproj",
-      "packagesPath": "C:\\Users\\RAX\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\RAX\\Desktop\\NewAPIand WEb\\Sugamta3Jan\\SugamtaWebMain\\Sugamta.Web\\obj\\",
+      "projectPath": "C:\\Users\\HP\\Desktop\\SugamtaWebMain\\Sugamta.Web\\Sugamta.Web.csproj",
+      "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\HP\\Desktop\\SugamtaWebMain\\Sugamta.Web\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\RAX\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

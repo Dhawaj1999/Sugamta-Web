@@ -1,0 +1,26 @@
+﻿ @model List<Sugamta.Web.Models.UserEntity>
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+
+
+<h2>User Details</h2>
+
+@* <div id="UserDetailsContainer">
+    @Html.Partial("_UserEntityDetails")
+</div>  *@
+
+<h2>User Details</h2>
+
+@if (Model != null && Model.Any())
+{
+    <div id="UserDetailsContainer">
+        @Html.Partial("_UserEntityDetails")
+    </div>
+}
+else
+{
+    <p>No user details available.</p>
+}

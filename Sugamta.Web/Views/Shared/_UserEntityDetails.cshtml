@@ -1,0 +1,165 @@
+﻿   @model List<Sugamta.Web.Models.UserEntity>
+@*   @model Sugamta.Web.Models.UserEntity *@
+
+@* @{
+    ViewData["Title"] = "Index";
+
+} *@
+
+
+<div id="UserDetailsTable" style="width: 889px;
+    margin-left: -10px ">
+   @*  <div> *@
+
+        @* <button type="button" class="close" style="color: red;margin-top:15px;margin-left:-2px" onclick="closeDetails()">&times;</button> *@
+        <div>
+            <button type="button" class="btn btn-primary" onclick="openCreateModal()">Create</button>
+        </div>
+   @*  </div> *@
+    <table class="table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>CreationDate</th>
+                  @*   <th>IsDeleted</th> *@
+                    <th>RoleType</th>
+                    
+                </tr>
+            </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var userEntity in Model)
+                {
+                    <tr>
+                        <td style="display:none"> @userEntity.UserID</td> 
+                        <td>@userEntity.Email</td>
+                        <td>@userEntity.Name</td>
+                        <td style="display:none" >@userEntity.Password</td>  
+                        <td>@userEntity.CreationDate</td>
+                        <td style="display:none">@userEntity.CreatedBy</td>
+                        <td style="display:none">@userEntity.IsDeleted</td>
+                       @*  <td>@userEntity.RoleId</td> *@
+                       <td>@userEntity.RoleType</td>
+                       
+
+                        <td>
+                            <a href="#" onclick="openEditModal('@userEntity.Email')"><i class="fa-solid fa-pen-to-square"></i></a>
+
+
+                            <a href="#" onclick="openDeleteModal('@userEntity.Email')"><i class='fas fa-trash' style='font-size:15px'></i></a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <p>No user available.</p>
+            }
+        </tbody>
+    </table>
+  
+</div>
+
+<div id="createUserModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create User</h5>
+                 <button type="button" class="close" data-dismiss="modal" onclick="closeCreateModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> 
+            </div>
+            <div class="modal-body">
+                @await Html.PartialAsync("Create", new Sugamta.Web.Models.UserEntity())
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editUserModal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit User</h5>
+                 <button type="button" class="close" data-dismiss="modal" onclick="closeEditModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> 
+            </div>    
+            <div id="editUserModalContainer"></div>
+        </div>
+    </div>
+</div>
+ 
+
+
+
+<div id="deleteModalContainer">
+    @await Html.PartialAsync("_DeleteUserModal")
+</div>
+
+
+
+
+<script>
+
+
+
+
+    function openDeleteModal(email) {
+        $('#deleteEmail').val(email);
+       
+        $('#deleteUserModal').modal('show');
+    }
+   
+
+    // open and close function of create user 
+    function openCreateModal() {
+       
+        $('#createUserModal').modal('show');
+    }
+    function closeCreateModal() {
+        $('#createUserModal').modal('hide');
+    }
+
+
+    //close function of user details
+    function closeDetails() {
+        var userDetailsTable = document.getElementById('UserDetailsTable');
+        userDetailsTable.style.display = 'none';
+    }
+
+
+    function openEditModal(email) {
+        $.ajax({
+            url: '/UserEntity/Edit',
+            type: 'GET',
+            data: { email: email },
+            success: function (data) { 
+                console.log(data);
+                $('#UserId').val(data.userId);
+                           $('#EmailInput2').val(data.email);
+                               $('#nameInput').val(data.name);
+                               $('#passwordInput').val(data.password);
+                               $('#roleIdInput').val(data.roleId);
+                               $('#creationDateInput').val(data.creationDate);
+                               $('#createdByInput').val(data.createdBy);
+                               $('#isDeletedInput').val(data.isDeleted);
+                $('#editUserModalContainer').html(data);
+                $('#editUserModal').modal('show');
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    }
+
+    function closeEditModal() {
+        console.log("Function called");
+        $('#editUserModal').modal('hide');
+    }
+
+</script>
+
+
