@@ -11,11 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text.Json;
 using System.Net.Http.Formatting;
 using System.ComponentModel.DataAnnotations;
-using Sugamta.Web.Services;
-using Sugamta.Web.Models.UserDTOs;
-using static System.Net.WebRequestMethods;
-using static Org.BouncyCastle.Bcpg.Attr.ImageAttrib;
-using static QRCoder.PayloadGenerator;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Sugamta.Web.Controllers
 {
@@ -37,6 +33,7 @@ namespace Sugamta.Web.Controllers
 
         public IActionResult Index()
         {
+
             return View("Login");
         }
 
@@ -138,6 +135,7 @@ namespace Sugamta.Web.Controllers
                         }
                         else
                         {
+                            // Console.WriteLine("Error Calling Web API");
                             TempData["RegisterErrorMessage"] = "Please Insure the all Required Filled Correctly Inserted";
                             return RedirectToAction("Register", "Home");
                         }
@@ -175,12 +173,20 @@ namespace Sugamta.Web.Controllers
                         {
                             client.BaseAddress = new Uri(apiUrl);
 
+                            // Send the user credentials to the login API
                             HttpResponseMessage response = await client.PostAsJsonAsync(apiUrl, user);
 
                             string token = "";
 
                             if (response.IsSuccessStatusCode)
                             {
+                                // Parse the response to check authentication status
+                                //bool isAuthenticated = await response.Content.ReadAsAsync<bool>();
+
+
+                                // Successful login, you might want to handle authentication hereSSsSSS
+                                // For example, set a cookie or JWT token for the user
+                                //return new JsonResult(new { Message = "Login successful" });
                                 var responseData = await response.Content.ReadAsStringAsync();
 
                                 using (JsonDocument document = JsonDocument.Parse(responseData))
@@ -343,6 +349,7 @@ namespace Sugamta.Web.Controllers
         {
             using (var client = new HttpClient())
             {
+
                 string apiUrl = $"https://localhost:7109/api/get-user-details/{Uri.EscapeDataString(email)}";
 
                 HttpResponseMessage response = await client.GetAsync(apiUrl);
@@ -438,8 +445,11 @@ namespace Sugamta.Web.Controllers
                 formData.Add(new StringContent(userDetails.Email), "Email");
                 formData.Add(new StringContent(userDetails.Address), "Address");
                 formData.Add(new StringContent(userDetails.City), "City");
-                formData.Add(new StringContent(userDetails.State), "State");
-                formData.Add(new StringContent(userDetails.Country), "Country");
+                /* formData.Add(new StringContent(userDetails.StateId), "State");
+                 formData.Add(new StringContent(userDetails.CountryId), "Country");*/
+
+                formData.Add(new StringContent(userDetails.StateId.ToString()), "StateId");
+                formData.Add(new StringContent(userDetails.CountryId.ToString()), "CountryId");
                 formData.Add(new StringContent(userDetails.PhoneNumber), "PhoneNumber");
                 formData.Add(new StringContent(userDetails.AlternatePhoneNumber), "AlternatePhoneNumber");
 
@@ -513,6 +523,7 @@ namespace Sugamta.Web.Controllers
 
         public async Task<UserDetails> GetUser(string email)
         {
+
             using (var client = new HttpClient())
             {
                 string UserApiUrl = $"https://localhost:7109/api/User/{Uri.EscapeDataString(email)}";
@@ -536,6 +547,72 @@ namespace Sugamta.Web.Controllers
                     return null;
                 }
             }
+        }
+
+        public async Task<List<State>> GetState()
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://localhost:7109/api/");
+                    var response = await client.GetAsync("get-state-list");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return await response.Content.ReadAsAsync<List<State>>();
+                    }
+                    else
+                    {
+                        // Log the error or handle it appropriately
+                        ModelState.AddModelError(string.Empty, "Server error. Unable to fetch state data.");
+                        return new List<State>();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or handle exceptions
+                Console.WriteLine($"Exception: {ex.Message}");
+                ModelState.AddModelError(string.Empty, "An unexpected error occurred.");
+                return new List<State>();
+            }
+        }
+
+        public async Task<List<Country>> GetCountry()
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://localhost:7109/api/");
+                    var response = await client.GetAsync("get-country-list");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return await response.Content.ReadAsAsync<List<Country>>();
+                    }
+                    else
+                    {
+                        // Log the error or handle it appropriately
+                        ModelState.AddModelError(string.Empty, "Server error. Unable to fetch country data.");
+                        return new List<Country>();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log or handle exceptions
+                Console.WriteLine($"Exception: {ex.Message}");
+                ModelState.AddModelError(string.Empty, "An unexpected error occurred.");
+                return new List<Country>();
+            }
+        }
+
+
+        public IActionResult Privacy()
+        {
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

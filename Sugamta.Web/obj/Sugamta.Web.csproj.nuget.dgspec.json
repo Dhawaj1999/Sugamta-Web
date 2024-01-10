@@ -1,34 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Sugamta.Web - Dhawaj\\Sugamta.Web - Dhawaj\\Sugamta.Web2janLatest\\Sugamta.Web2jan\\Sugamta.Web\\Sugamta.Web\\Sugamta.Web\\Sugamta.Web.csproj": {}
+    "C:\\Users\\RAX\\Desktop\\NewAPIand WEb\\Sugamta3Jan\\SugamtaWebMain\\Sugamta.Web\\Sugamta.Web.csproj": {}
   },
   "projects": {
-    "D:\\Sugamta.Web - Dhawaj\\Sugamta.Web - Dhawaj\\Sugamta.Web2janLatest\\Sugamta.Web2jan\\Sugamta.Web\\Sugamta.Web\\Sugamta.Web\\Sugamta.Web.csproj": {
+    "C:\\Users\\RAX\\Desktop\\NewAPIand WEb\\Sugamta3Jan\\SugamtaWebMain\\Sugamta.Web\\Sugamta.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Sugamta.Web - Dhawaj\\Sugamta.Web - Dhawaj\\Sugamta.Web2janLatest\\Sugamta.Web2jan\\Sugamta.Web\\Sugamta.Web\\Sugamta.Web\\Sugamta.Web.csproj",
+        "projectUniqueName": "C:\\Users\\RAX\\Desktop\\NewAPIand WEb\\Sugamta3Jan\\SugamtaWebMain\\Sugamta.Web\\Sugamta.Web.csproj",
         "projectName": "Sugamta.Web",
-        "projectPath": "D:\\Sugamta.Web - Dhawaj\\Sugamta.Web - Dhawaj\\Sugamta.Web2janLatest\\Sugamta.Web2jan\\Sugamta.Web\\Sugamta.Web\\Sugamta.Web\\Sugamta.Web.csproj",
-        "packagesPath": "C:\\Users\\EYTEC\\.nuget\\packages\\",
-        "outputPath": "D:\\Sugamta.Web - Dhawaj\\Sugamta.Web - Dhawaj\\Sugamta.Web2janLatest\\Sugamta.Web2jan\\Sugamta.Web\\Sugamta.Web\\Sugamta.Web\\obj\\",
+        "projectPath": "C:\\Users\\RAX\\Desktop\\NewAPIand WEb\\Sugamta3Jan\\SugamtaWebMain\\Sugamta.Web\\Sugamta.Web.csproj",
+        "packagesPath": "C:\\Users\\RAX\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\RAX\\Desktop\\NewAPIand WEb\\Sugamta3Jan\\SugamtaWebMain\\Sugamta.Web\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\EYTEC\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\RAX\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {},
-          "https://nuget.devexpress.com/hv9HGjX4arUW8yqvWWleFRyWnnFx7UXy8ND4tvHb4N2VDhq4Wd/api": {}
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {

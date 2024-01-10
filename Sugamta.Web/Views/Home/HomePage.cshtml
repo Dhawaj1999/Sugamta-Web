@@ -266,15 +266,27 @@
                                 <input id="cityInput" asp-for="City" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">                           
                         </div>
 
-                        <div class="form-floating mb-2">
-                                <label for="floatingInput">State</label>
-                                <input id="stateInput" asp-for="State" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">                            
-                        </div>
+                            <div class="form-floating mb-3">
+                                <label for="stateInput">State</label>
+                                <select id="stateInput" asp-for="StateId" class="form-control form-select form-select-sm" aria-label="small select example" style="width: 359px; margin-left: 151px;">
+                                    <option selected></option>
+                                    @foreach (var state in ViewBag.StateList as List<State> ?? new List<State>())
+                                    {
+                                        <option value="@state.StateId">@state.StateName</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <label for="countryInput">Country</label>
+                                <select id="countryInput" asp-for="CountryId" class="form-control form-select form-select-sm" aria-label="small select example" style="width: 359px; margin-left: 151px; z-index: 1000;">
+                                    <option selected></option>
+                                    @foreach (var country in ViewBag.CountryList as List<Country> ?? new List<Country>())
+                                    {
+                                        <option value="@country.CountryId">@country.CountryName</option>
+                                    }
+                                </select>
+                            </div>
 
-                        <div class="form-floating mb-2">
-                                <label for="floatingInput">Country</label>
-                                <input id="countryInput" asp-for="Country" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">                            
-                        </div>
 
                          <div class="form-floating mb-2">
                                 <label for="floatingInput">Phone Number</label>
@@ -289,7 +301,9 @@
 
                             <div class="form-floating mb-2">
                                 <label>Profile Picture:</label>
-                                <input type="file" id="formFile" class="form-control" asp-for="formFile">
+                                <div class="input-group" style="width: 92%;">
+                                    <input type="file" id="formFile" class="form-control" asp-for="formFile" onchange="previewImage(this)" >                                   
+                                </div>
                             </div>
 
                         <button type="submit" class="btn btn-lg btn-primary btn-login text-uppercase mb-2" style="padding: 6px 18px 5px 18px;
@@ -307,11 +321,22 @@
                             Cancel
                         </button>
                     </div>
-                    
-                    <div class="col-3">
-                            <img asp-formaction="" id="userImage" width="100%" style="margin-top: 20px;height: 160px;border: solid;" />
-                    </div>
-               
+
+                        <div class="col-3" style="position: relative;">
+                            <img asp-formaction="" class="userImage" id="imagePreview" width="100%" style="margin-top: 20px; height: 160px; border: solid;" />
+
+                            @if (Model != null && Model.ImageUrl != null)
+                            {
+                                <input type="hidden" id="previousImageUrl" src="@Model.ImageUrl" />
+                            }
+
+                            <button type="button" class="btn btn-custom" 
+                                onclick="discardImage()">
+                                <i class="fas fa-trash-alt" style="color:brown;"></i>
+                            </button>
+                        </div>
+                            
+                        
                 </div>
               </form>
             </div>
@@ -339,6 +364,34 @@
 </main>
 <!--Main layout-->
 <!--Open And Close onclick model popup of My Profile-->
+
+<style>
+    .btn-custom {
+        position: absolute;
+        right: 20px;
+        top: 25px;
+        padding:0px 0px 0px 0px;
+        background: #ffffff;
+        width: 30px;
+        height: 30px;
+        border-top-left-radius: 17px;
+        border-bottom-left-radius: 17px;
+        border-bottom-right-radius: 17px;
+        border-top-right-radius: 17px;      
+        border: solid;
+       
+    }
+
+    .btn-custom:hover{
+        background-color: red;
+    }
+
+    .btn-custom:hover i{
+        color: #ffffff;
+    }
+
+</style>
+
 <script>
     function copyToClipboard() {
         $.ajax({
@@ -417,8 +470,8 @@
                 $('#emailInput').val(data.email);
                 $('#addressInput').val(data.address);
                 $('#cityInput').val(data.city);
-                $('#stateInput').val(data.state);
-                $('#countryInput').val(data.country);
+                $('#stateInput').val(data.stateId);
+                $('#countryInput').val(data.countryId);
                 $('#phoneInput').val(data.phoneNumber);
                 $('#alternatePhoneInput').val(data.alternatePhoneNumber);
             },
@@ -427,8 +480,80 @@
             }
         });
     }
+    function GetStateList() {
+        $.ajax({
+            url: '/Home/GetState', // Update the URL as needed
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                try {
+                    var stateDropdown = $('#stateInput');
+                    stateDropdown.empty(); // Clear existing options
 
+                    // Add a default option
+                    stateDropdown.append($('<option>', {
+                        value: '',
+                        text: '--Select State--'
+                    }));
+
+                    // Populate dropdown with state options
+                    data.forEach(function (state) {
+                        stateDropdown.append($('<option>', {
+                            value: state.stateId,
+                            text: state.stateName
+                        }));
+                    });
+                } catch (error) {
+                    console.error('Error populating state dropdown:', error);
+                }
+            },
+            error: function (error) {
+                console.log('Error fetching state data:', error);
+                // Handle the error
+            }
+        });
+    }
+
+
+    function GetCountryList() {
+        $.ajax({
+            url: '/Home/GetCountry',
+            type:'GET',
+            dataType:'json',
+            success: function (data) {
+                console.log(data);
+                try {
+                    var countryDropdown = $('#countryInput');
+                    countryDropdown.empty(); // Clear existing options
+
+                    // Add a default option
+                    countryDropdown.append($('<option>', {
+                        value: '',
+                        text: '--Select Country--'
+                    }));
+
+                    // Populate dropdown with country options
+                    data.forEach(function (country) {
+                        countryDropdown.append($('<option>', {
+                            value: country.countryId,
+                            text: country.countryName
+                        }));
+                    });
+                } catch (error) {
+                    console.error('Error populating country dropdown:', error);
+                }
+            },
+            error: function (error) {
+                console.log('Error fetching country data:', error);
+                // Handle the error
+            }
+        });
+    }
+   
     function openProfilePopup() {
+        GetStateList()
+        GetCountryList();
         GetUserDetails();
         displayImage();
         $('#profilePopup').modal('show');
@@ -438,6 +563,44 @@
     function closeModal1() {
         // Assuming you're using jQuery for Bootstrap modal
         $('#profilePopup').modal('hide');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+    // Retrieve the previous image URL from the hidden field
+    var previousImageUrl = document.getElementById('previousImageUrl').value;
+    var imagePreview = document.getElementById('imagePreview');
+
+    // Check if there is a previous image URL
+    if (previousImageUrl) {
+        imagePreview.src = previousImageUrl;
+        imagePreview.style.display = 'block';
+    }
+    });
+
+    function previewImage(input) {
+    var preview = document.getElementById('imagePreview');
+    var file = input.files[0];
+
+    if (file) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        };
+
+        reader.readAsDataURL(file);
+    } else {
+        preview.src = '';
+        preview.style.display = 'none';
+    }
+}
+    function discardImage() {
+        var fileInput = document.getElementById('formFile');
+        fileInput.value = ''; // Clear the file input
+        var imagePreview = document.getElementById('imagePreview');
+        imagePreview.src = ''; // Clear the preview
+        imagePreview.style.display = 'block';
     }
 
 
