@@ -177,6 +177,7 @@
                         User Management
                     </button>
                 </div>
+<<<<<<< HEAD
                
                 <a href="#" class="list-group-item-action py-2 ripple">
                     <i class="fa-solid fa-person fa-fw me-3" style="margin-left:19px"></i>Primary Clients
@@ -184,6 +185,13 @@
                 <a onclick="renderMana();" href="#" class="list-group-item-action py-2 ripple">
                     <i class="fa-solid fa-person fa-fw me-3" style="margin-left:19px" ></i>Secondary Clients
                 </a>
+=======
+
+                <button onclick="renderPrimaryClientPartialView();" class="list-group-item list-group-item-action py-2 ripple">
+                    <i class="fa-solid fa-person fa-fw me-2"></i><span>PrimaryClients</span>
+                </button>
+
+>>>>>>> bd979a29c65ed4e347543f3b9c115b2f727b20c6
             </div>
         </div>
     </nav>
@@ -399,7 +407,11 @@
                 <div class="modal-content pl-4 pr-4">
                     <div class="modal-body" style="padding: 0;">
                         <div id="user-add-view"></div>
+<<<<<<< HEAD
                          </div> 
+=======
+                        </div>
+>>>>>>> bd979a29c65ed4e347543f3b9c115b2f727b20c6
                     </div>
                 </div>
             </div>
@@ -415,6 +427,33 @@
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
+=======
+        <!--Primary Client Grid-->
+        <div style="display: none;" id="primaryClient-grid-view"></div>
+         <!-- Add Primary Client Pop up -->
+        <div class="modal fade" id="primaryClientAddModal" tabindex="-1" role="dialog" aria-labelledby="primaryClientAddModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content pl-4 pr-4">
+                    <div class="modal-body" style="padding: 0;">
+                        <div id="primaryClient-add-view"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Primary Pop up -->
+    <div class="modal fade" id="primaryClientEditModal" tabindex="-1" role="dialog" aria-labelledby="primaryClientAddModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content pl-4 pr-4">
+                    <div class="modal-body" style="padding: 0;">
+                      <div id="primaryClient-edit-view"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+>>>>>>> bd979a29c65ed4e347543f3b9c115b2f727b20c6
     </div>
   
     <div style="display: none;" id="secondary-grid-view"></div>
@@ -472,6 +511,7 @@
 </style>
 
 <script src="~/js/UserEntityDetails.js"></script>
+<<<<<<< HEAD
 <script src="~/js/SecondaryClientDetail.js"></script>
 <script>
     function renderMana() {
@@ -530,6 +570,70 @@
                 loadDataTable();
                 $("#user-grid-view").css("display", "block");
 
+=======
+<script src="~/js/PrimaryClientDetails.js"></script>
+<script>
+    function renderPrimaryClientPartialView(){
+        $.ajax({
+            url: '/PrimaryClient/GetPrimaryClient',
+            type: 'GET',
+            success: function (partialView) {
+                $("#primaryClient-grid-view").html(partialView);
+                loadDataClientTable();
+                $("#user-grid-view").css("display", "none");
+                $("#primaryClient-grid-view").css("display", "block");
+            },
+            error: function (error) {
+                console.error('Error fetching PrimaryClient partial view:', error);
+            }
+        });
+    }
+
+    function renderPrimaryClientAddPartialView() {
+        $.ajax({
+            url: '/PrimaryClient/Create',
+            type: 'GET',
+            success: function (partialView) {
+                $("#primaryClient-add-view").html(partialView);
+                //$("#user-add-view").css("display", "block");
+                $('#primaryClientAddModal').modal('show');
+            },
+            error: function (error) {
+                console.error('Error fetching PrimaryClient partial view:', error);
+            }
+        });
+    }
+
+    function renderPrimaryClientEditPartialView(email) {
+        $.ajax({
+            url: '/PrimaryClient/Edit',
+            type: 'GET',
+            data: { email: email },
+            success: function (partialView) {
+                console.log(partialView);
+                debugger;
+                $("#primaryClient-edit-view").html(partialView);
+                displayImageForPrimaryClient();
+                GetCountryListForPrimaryClient();
+                GetStateListForPrimaryClient();   
+                $('#primaryClientEditModal').modal('show');
+            },
+            error: function (error) {
+                console.error('Error fetching PrimaryClient partial view:', error);
+            }
+        });
+    }
+
+    function renderUserManagementPartialView() {
+        $.ajax({
+            url: '/UserEntity/UserEntityDetails',
+            type: 'GET',
+            success: function (partialView) {
+                $("#user-grid-view").html(partialView);
+                loadDataTable();
+                $("#primaryClient-grid-view").css("display", "none");
+                $("#user-grid-view").css("display", "block");
+>>>>>>> bd979a29c65ed4e347543f3b9c115b2f727b20c6
             },
             error: function (error) {
                 console.error('Error fetching UserEntityDetails partial view:', error);
@@ -843,7 +947,11 @@
     </script>
 } *@
 
+<<<<<<< HEAD
 @if (TempData["SecondaryClientRegistration"] != null)
+=======
+@if (TempData["PrimaryClientMessage"] != null)
+>>>>>>> bd979a29c65ed4e347543f3b9c115b2f727b20c6
 {
     <script src="/lib/jquery/dist/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -854,11 +962,19 @@
             "closeButton": true,
             "timeOut": 3000
         };
+<<<<<<< HEAD
         toastr.success('@TempData["SecondaryClientRegistration"]', { "iconClass": 'toast-success' });
     </script>
 }
 
 @if (TempData["SaveSecondaryClientDetails"] != null)
+=======
+        toastr.success('@TempData["PrimaryClientMessage"]', { "iconClass": 'toast-success' });
+    </script>
+}
+
+@if (TempData["UpdatePrimaryClientDetails"] != null)
+>>>>>>> bd979a29c65ed4e347543f3b9c115b2f727b20c6
 {
     <script src="/lib/jquery/dist/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -869,11 +985,19 @@
             "closeButton": true,
             "timeOut": 3000
         };
+<<<<<<< HEAD
         toastr.success('@TempData["SaveSecondaryClientDetails"]', { "iconClass": 'toast-success' });
     </script>
 }
 
 @if (TempData["UpdateSecondaryClientDetails"] != null)
+=======
+        toastr.success('@TempData["UpdatePrimaryClientDetails"]', { "iconClass": 'toast-success' });
+    </script>
+}
+
+@if (TempData["SavePrimaryClientDetails"] != null)
+>>>>>>> bd979a29c65ed4e347543f3b9c115b2f727b20c6
 {
     <script src="/lib/jquery/dist/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -884,6 +1008,7 @@
             "closeButton": true,
             "timeOut": 3000
         };
+<<<<<<< HEAD
         toastr.success('@TempData["UpdateSecondaryClientDetails"]', { "iconClass": 'toast-success' });
     </script>
 }
@@ -891,6 +1016,13 @@
 
 
 @if (TempData["DeleteSecondaryClientDetails"] != null)
+=======
+        toastr.success('@TempData["SavePrimaryClientDetails"]', { "iconClass": 'toast-success' });
+    </script>
+}
+
+@if (TempData["DeletePrimaryClientDetails"] != null)
+>>>>>>> bd979a29c65ed4e347543f3b9c115b2f727b20c6
 {
     <script src="/lib/jquery/dist/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -901,6 +1033,10 @@
             "closeButton": true,
             "timeOut": 3000
         };
+<<<<<<< HEAD
         toastr.success('@TempData["DeleteSecondaryClientDetails"]', { "iconClass": 'toast-success' });
+=======
+        toastr.success('@TempData["DeletePrimaryClientDetails"]', { "iconClass": 'toast-success' });
+>>>>>>> bd979a29c65ed4e347543f3b9c115b2f727b20c6
     </script>
 }
