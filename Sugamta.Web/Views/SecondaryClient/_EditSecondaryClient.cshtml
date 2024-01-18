@@ -1,0 +1,291 @@
+﻿@model Sugamta.Web.Models.SecondaryClientDTOs.SecondaryClientDetailsEditDtos
+@{
+    var SecondaryClientEmail = ViewData["SecondaryClientEmail"];
+}
+
+
+<form asp-controller="SecondaryClient" asp-action="AddOrUpdateSecondaryClientDetails" method="post" enctype="multipart/form-data">
+    <div class="modal-header">
+        <h5 class="modal-title"style="margin-left:-16px;">Secondary Client Details</h5>
+        <button type="button" class="close" style="color: red;" data-dismiss="modal" onclick="closeModalSecondaryClient()">&times;</button>
+    </div>
+    <div class="row">
+        <div class="modal-body col-9">
+            <!-- Your profile content goes here -->
+            @* <div class="form-floating mb-2">
+                <label hidden for="floatingInput">Email</label>
+                <input id="emailInput" asp-for="SecondaryClientEmail" hidden type="email" class="form-control input-sm" id="floatingInput" placeholder="examp@gmail.com" disabled>
+
+            </div> *@
+
+            <div class="form-floating mb-2">
+                <label for="floatingInput">Email</label>
+
+                @if (Model == null)
+                {
+                    <!-- Display the email value, but disable the input -->
+                    <input id="emailInput" asp-for="SecondaryClientEmail" disabled value="@SecondaryClientEmail" type="email" class="form-control input-sm" id="floatingInput" mailto:placeholder="examp@gmail.com">
+
+                    <!-- Hidden input to store the email value for submission -->
+                    <input type="hidden" asp-for="SecondaryClientEmail" value="@SecondaryClientEmail" />
+                }
+                else
+                {
+                    <!-- Display the email value as a disabled input -->
+                    <input id="emailInput" asp-for="SecondaryClientEmail" disabled type="email" class="form-control input-sm" id="floatingInput" mailto:placeholder="examp@gmail.com">
+
+                    <!-- Hidden input to store the email value for submission -->
+                    <input type="hidden" asp-for="SecondaryClientEmail" />
+                }
+            </div>
+
+            <div class="form-floating mb-2">
+                <label for="floatingInput">Address</label>
+                <input id="addressInput" asp-for="Address" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">
+            </div>
+            <div class="form-floating mb-2">
+                <label for="floatingInput">City</label>
+                <input id="cityInput" asp-for="City" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">
+            </div>
+@* 
+            <div class="form-floating mb-3">
+                <label for="stateInputSecondaryClient">State</label>
+                <div style="display:flex">
+                 <select id="stateInputSecondaryClient" asp-for="StateId" class="form-control form-select form-select-sm" aria-label="small select example" style="width: 359px; margin-left: 151px;">
+                    <option selected></option>
+                    @foreach (var state in ViewBag.StateList as List<State> ?? new List<State>())
+                    {
+                        <option value="@state.StateId">@state.StateName</option>
+                    }
+                </select> 
+                </div>
+            </div>
+            <div class="form-floating mb-3">
+                <label for="countryInputSecondaryClient">Country</label>
+                <div style="display:flex">
+                <select id="countryInputSecondaryClient" asp-for="CountryId" class="form-control form-select form-select-sm" aria-label="small select example" style="width: 359px; margin-left: 151px; z-index: 1000;">
+                    <option selected></option>
+                    @foreach (var country in ViewBag.CountryList as List<Country> ?? new List<Country>())
+                    {
+                        <option value="@country.CountryId">@country.CountryName</option>
+                    }
+                </select>
+                </div>
+            </div> *@
+             <div class="form-floating mb-3">
+     <label for="stateInputSecondaryClient">State</label>
+     <div style="display: flex;">
+         <input id="" style="width: 32%;" asp-for="State" type="text" class="form-control input-sm" id="floatingInput" placeholder="state">
+         <select id="stateInputSecondaryClient" asp-for="StateId" class="form-control form-select form-select-sm" aria-label="small select example" style="width: 33%;">
+            @*  @ <option selected></option> @ *@
+             @foreach (var state in ViewBag.StateList as List<State> ?? new List<State>())
+             {
+                 <option value="@state.StateId">@state.StateName</option>
+             }
+         </select>
+     </div>
+
+ </div>
+ <div class="form-floating mb-3">
+     <label for="countryInputSecondaryClient">Country</label>
+     <div style="display: flex;">
+         <input id="" style="width: 32%;" asp-for="Country" type="text" class="form-control input-sm" id="floatingInput" placeholder="country">
+         <select id="countryInputSecondaryClient" asp-for="CountryId" class="form-control form-select form-select-sm" aria-label="small select example" style="width: 33%; z-index: 1000;">
+             @* @ <option>--Select Country--</option> @ *@
+             @foreach (var country in ViewBag.CountryList as List<Country> ?? new List<Country>())
+             {
+                 <option selected value="@country.CountryId">@country.CountryName</option>
+             }
+         </select>
+     </div>              
+ </div>
+
+            <div class="form-floating mb-2">
+                <label for="floatingInput">Phone Number</label>
+                <input id="phoneInput" asp-for="PhoneNumber" type="number" class="form-control input-sm" id="floatingInput" placeholder="12345">
+
+            </div>
+            <div class="form-floating mb-2">
+                <label for="floatingInput">Alternate PhoneNo</label>
+                <input id="alternatePhoneInput" asp-for="AlternatePhoneNumber" type="number" class="form-control input-sm" id="floatingInput" placeholder="123..">
+
+            </div>
+           
+            <div class="form-floating mb-2">
+                <label>Profile Picture:</label>
+                <div class="input-group" style="width: 92%;">
+                    <input type="file" id="formFile2" class="form-control" asp-for="formFile" onchange="previewImage2(this)">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-lg btn-primary btn-login text-uppercase mb-2" style="padding: 6px 18px 5px 18px;
+                        margin-top: 8px;
+                        font-size: 15px;
+                        font-family: sans-serif;
+                        font-weight: lighter;">
+                Save
+            </button>
+            <button class="btn btn-lg btn-outline-dark text-uppercase mb-2" type="button" style="padding: 6px 18px 5px 18px;
+                        margin-top: 8px;
+                        font-size: 15px;
+                        font-family: sans-serif;
+                        font-weight: lighter;" onclick="closeModalSecondaryClient()">
+                Cancel
+            </button>
+        </div>
+
+        <div class="col-3" style="position: relative;">
+            <img asp-formaction="" class="secondaryClientImage" id="imagePreview2" width="100%" style="margin-top: 20px; height: 160px; border: solid;" />
+
+            @if (Model != null && Model.ImageUrl != null)
+            {
+                <input type="hidden" id="previousImageUrl2" src="@Model.ImageUrl" />
+            }
+
+            <button type="button" class="btn btn-custom"
+                    onclick="discardImage2()">
+                <i class="fas fa-trash-alt" style="color:brown;"></i>
+            </button>
+        </div>
+
+
+    </div>
+</form>
+@*         </div>
+    </div>
+</div> *@
+
+
+<script>
+    var secondaryClientEmail = '@Html.Raw(SecondaryClientEmail)';
+
+    function displayImageForSecondaryClient() {
+        $.ajax({
+            url: '/SecondaryClient/GetProfileImageSecondaryClient',
+            type: 'GET',
+            data: { email: secondaryClientEmail },
+            success: function (data) {
+                //debugger;
+                $('.secondaryClientImage').attr('src', 'data:image/png;base64,' + data);
+    @*  $('#navProfileImage').attr('src', 'data:image/png;base64,' + data); *@
+                    },
+            error: function (error) {
+                console.error('Failed to retrieve and display image:', error);
+            }
+        });
+    }
+
+    function GetStateListForSecondaryClient() {
+        $.ajax({
+            url: '/Home/GetState', // Update the URL as needed
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                try {
+                    var stateDropdown = $('#stateInputSecondaryClient');
+                    stateDropdown.empty(); // Clear existing options
+
+                    // Add a default option
+                    stateDropdown.append($('<option>', {
+                        value: '',
+                        text: '--Select State--'
+                    }));
+
+                    // Populate dropdown with state options
+                    data.forEach(function (state) {
+                        stateDropdown.append($('<option>', {
+                            value: state.stateId,
+                            text: state.stateName
+                        }));
+                    });
+                } catch (error) {
+                    console.error('Error populating state dropdown:', error);
+                }
+            },
+            error: function (error) {
+                console.log('Error fetching state data:', error);
+                // Handle the error
+            }
+        });
+    }
+
+    function GetCountryListForSecondaryClient() {
+        $.ajax({
+            url: '/Home/GetCountry',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                try {
+                    var countryDropdown = $('#countryInputSecondaryClient');
+                    countryDropdown.empty(); // Clear existing options
+
+                    // Add a default option
+                    countryDropdown.append($('<option>', {
+                        value: '',
+                        text: '--Select Country--'
+                    }));
+
+                    // Populate dropdown with country options
+                    data.forEach(function (country) {
+                        countryDropdown.append($('<option>', {
+                            value: country.countryId,
+                            text: country.countryName
+                        }));
+                    });
+                } catch (error) {
+                    console.error('Error populating country dropdown:', error);
+                }
+            },
+            error: function (error) {
+                console.log('Error fetching country data:', error);
+                // Handle the error
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Retrieve the previous image URL from the hidden field
+        var previousImageUrl = document.getElementById('previousImageUrl2').value;
+        var imagePreview = document.getElementById('imagePreview2');
+
+        // Check if there is a previous image URL
+        if (previousImageUrl) {
+            imagePreview.src = previousImageUrl;
+            imagePreview.style.display = 'block';
+        }
+    });
+
+    function previewImage2(input) {
+        var preview = document.getElementById('imagePreview2');
+        var file = input.files[0];
+
+        if (file) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '';
+            preview.style.display = 'none';
+        }
+    }
+    function discardImage2() {
+        var fileInput = document.getElementById('formFile2');
+        fileInput.value = ''; // Clear the file input
+        var imagePreview = document.getElementById('imagePreview2');
+        imagePreview.src = ''; // Clear the preview
+        imagePreview.style.display = 'block';
+    }
+
+
+    function closeModalSecondaryClient() {
+        // Assuming you're using jQuery for Bootstrap modal
+        $('#secondaryClientEditModal').modal('hide');
+    }
+</script>

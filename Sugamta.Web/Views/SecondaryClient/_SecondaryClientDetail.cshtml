@@ -1,0 +1,36 @@
+﻿@model List<SecondaryClient>
+
+<div class="card shadow border-0 my-4">
+   
+    <div class="card-body p-4">
+        <div class="row pb-3">
+            <div class="col-6">
+            </div>
+        </div>
+
+        <table id="tblData1" class="table table-bordered " style="width:100%">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Creation Date</th>
+                    <th>Role</th>
+                    <th>
+                        <div style="display: flex; justify-content: center;">
+                            <button type="button" style="background: #33cfa4 !important; border: none;" onclick="renderSecondarClientAddView();" class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i> Register Secondary Client 
+                            </button>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/SecondaryClientDetail.js"></script>
+}
+
+ <script src="~/js/AddSecondaryClientView.js"></script> 

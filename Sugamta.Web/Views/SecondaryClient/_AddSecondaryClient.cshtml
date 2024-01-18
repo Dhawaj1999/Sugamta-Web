@@ -1,0 +1,69 @@
+﻿@model SecondaryClient
+
+@* <div id="profilePopup" class="modal fade profileform">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content pl-4 pr-4"> *@
+<!-- Popup content goes here -->
+<form asp-controller="SecondaryClient" asp-action="Create" method="post">
+    <div class="modal-header">
+        <h5 class="modal-title" style="margin-left: -16px">Secondary Client</h5>
+        <button type="button" class="close" style="color: red;" data-dismiss="modal" onclick="closeAddModalSecondaryClient()">&times;</button>
+    </div>
+      <div class="row">
+        <div class="modal-body col-9">
+            <!-- Your profile content goes here -->
+            <div class="form-floating mb-3">
+                <label for="secondaryemailInput">Email</label>
+                <input id="secondaryemailInput" asp-for="SecondaryClientEmail" type="email" class="form-control input-sm" placeholder="Enter secondary client email">
+            </div>
+
+            <div class="form-floating mb-3">
+                <label for="nameInput">Name</label>
+                <input id="nameInput" asp-for="Name" type="text" class="form-control input-sm" placeholder="Enter name">
+            </div>
+   
+            <div class="form-floating mb-3">
+                <label for="passwordInput">Password</label>
+                <input id="passwordInput" asp-for="Password" type="password" class="form-control input-sm" placeholder="Enter password">
+            </div>
+
+            <div class="form-floating mb-3">
+                <label for="roleIdInput">Role Type</label>
+                <select asp-for="RoleId" class="form-control input-sm" required style="width: 359px;
+                   margin-left: 150px">
+                    <option value="7">Secondary Client</option>
+                </select>
+            </div>
+
+            <div class="form-floating mb-3">
+                <label for="primaryemailInput">Primary Client Email</label>
+                <input id="primaryemailInput" asp-for="PrimaryClientEmail" type="email" class="form-control input-sm" placeholder="Enter primary client email">
+            </div>
+
+            
+            <button type="submit" class="btn btn-lg btn-primary btn-login text-uppercase mb-2" style="padding: 6px 18px 5px 18px;
+                        margin-top: 8px;
+                        font-size: 15px;
+                        font-family: sans-serif;
+                        font-weight: lighter;">
+                Save
+            </button>
+            <button class="btn btn-lg btn-outline-dark text-uppercase mb-2" type="button" style="padding: 6px 18px 5px 18px;
+                        margin-top: 8px;
+                        font-size: 15px;
+                        font-family: sans-serif;
+                        font-weight: lighter;" onclick="closeAddModalSecondaryClient()">
+                Cancel
+            </button>
+        </div>
+
+    </div>
+</form>
+
+<script>
+
+    function closeAddModalSecondaryClient() {
+        // Assuming you're using jQuery for Bootstrap modal
+        $('#secondaryclientAddModal').modal('hide');
+    }
+</script>
