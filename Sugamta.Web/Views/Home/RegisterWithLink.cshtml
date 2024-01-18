@@ -1,4 +1,4 @@
-﻿@model Sugamta.Web.Models.UserEntity
+﻿@model Sugamta.Web.Models.PrimaryClientDTOs.PrimaryClientRegisterDto
 
 <style>
     .login {
@@ -21,7 +21,7 @@
         padding: 0.75rem 1rem;
     }
 
-    .password-strength-indicator{
+    .password-strength-indicator {
         font-size: 12px;
         display: inline-block;
         height: 15px;
@@ -32,11 +32,11 @@
         color: #fff;
     }
 
-    .password-strength-indicator.very-weak{
-        background: #cf0000;
-        width: 20%;
-        padding-bottom: 20px;
-    }
+        .password-strength-indicator.very-weak {
+            background: #cf0000;
+            width: 20%;
+            padding-bottom: 20px;
+        }
 
         .password-strength-indicator.weak {
             background: #f6891f;
@@ -75,13 +75,13 @@
                             <!-- Sign Up Form -->
                             <form asp-controller="Home" asp-action="AddUser" method="post">
                                 <div class="text-danger"></div>
-                                
+
                                 <div class="form-floating mb-3">
-                                    <input asp-for="Email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
+                                    <input asp-for="PrimaryClientEmail" type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
                                     <label for="floatingInput">Email address</label>
-                                </div>  
+                                </div>
                                 <div class="form-floating mb-3">
-                                    <input asp-for="Name" type="text" class="form-control" id="floatingInput" placeholder="name" required>
+                                    <input asp-for="PrimaryClientName" type="text" class="form-control" id="floatingInput" placeholder="name" required>
                                     <label for="floatingInput">Name</label>
                                 </div>
                                 <div class="form-floating mb-3">
@@ -90,17 +90,16 @@
 
                                 </div>
                                 <div class="form-floating mb-3">
+                                    <select asp-for="AgencyEmail" type="text" class="form-control form-select form-select-sm " id="floatingInput" aria-label="small select example" required>
+                                        <option selected value="@Model.AgencyEmail">@Model.AgencyName</option>
+                                    </select>
+                                    <label for="floatingInput">Agency</label>
+                                </div>
+                                <div class="form-floating mb-3">
                                     <select asp-for="RoleId" type="text" class="form-control form-select form-select-sm " id="floatingInput" aria-label="small select example" required>
-
-                                        <option selected></option>
-                                        <option value="1">Admin</option>
-                                        <option value="2">Agent</option>
-                                        <option value="3">Investor</option>
-                                        <option value="4">Client</option>
-                                        <option value="5">Agency</option>
+                                        <option selected value="6">Primary Client</option>
                                     </select>
                                     <label for="floatingInput">Role Type</label>
-
                                 </div>
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" value="" id="rememberPasswordCheck">

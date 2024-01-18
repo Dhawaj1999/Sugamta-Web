@@ -1,0 +1,105 @@
+﻿@model UserDetails
+
+@* <div id="profilePopup" class="modal fade profileform">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content pl-4 pr-4"> *@
+<!-- Popup content goes here -->
+<form asp-controller="Home" asp-action="AddOrUpdateUserDetails" method="post" enctype="multipart/form-data">
+    <div class="modal-header" style="padding: 16px 0 !important;">
+        <h5 class="modal-title">User Profile</h5>
+        <button type="button" class="close" style="color: red;" data-dismiss="modal" onclick="closeModal1()">&times;</button>
+    </div>
+    <div class="row">
+        <div class="modal-body col-9">
+            <!-- Your profile content goes here -->
+            <div class="form-floating mb-2">
+                <label hidden for="floatingInput">Email</label>
+                <input id="emailInput" asp-for="Email" hidden type="email" class="form-control input-sm" id="floatingInput" placeholder="examp@gmail.com" disabled>
+
+            </div>
+
+            <div class="form-floating mb-2">
+                <label for="floatingInput">Address</label>
+                <input id="addressInput" asp-for="Address" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">
+            </div>
+            <div class="form-floating mb-2">
+                <label for="floatingInput">City</label>
+                <input id="cityInput" asp-for="City" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">
+            </div>
+
+            <div class="form-floating mb-3">
+                <label for="stateInput">State</label>
+                <select id="stateInput" asp-for="StateId" class="form-control form-select form-select-sm" aria-label="small select example" style="width: 359px; margin-left: 151px;">
+                    <option selected></option>
+                    @foreach (var state in ViewBag.StateList as List<State> ?? new List<State>())
+                    {
+                        <option value="@state.StateId">@state.StateName</option>
+                    }
+                </select>
+            </div>
+            <div class="form-floating mb-3">
+                <label for="countryInput">Country</label>
+                <select id="countryInput" asp-for="CountryId" class="form-control form-select form-select-sm" aria-label="small select example" style="width: 359px; margin-left: 151px; z-index: 1000;">
+                    <option selected></option>
+                    @foreach (var country in ViewBag.CountryList as List<Country> ?? new List<Country>())
+                    {
+                        <option value="@country.CountryId">@country.CountryName</option>
+                    }
+                </select>
+            </div>
+
+
+            <div class="form-floating mb-2">
+                <label for="floatingInput">Phone Number</label>
+                <input id="phoneInput" asp-for="PhoneNumber" type="number" class="form-control input-sm" id="floatingInput" placeholder="12345">
+
+            </div>
+            <div class="form-floating mb-2">
+                <label for="floatingInput">Alternate PhoneNo</label>
+                <input id="alternatePhoneInput" asp-for="AlternatePhoneNumber" type="number" class="form-control input-sm" id="floatingInput" placeholder="123..">
+
+            </div>
+
+            <div class="form-floating mb-2">
+                <label>Profile Picture:</label>
+                <div class="input-group" style="width: 92%;">
+                    <input type="file" id="formFile" class="form-control" asp-for="formFile" onchange="previewImage(this)">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-lg btn-primary btn-login text-uppercase mb-2" style="padding: 6px 18px 5px 18px;
+                        margin-top: 8px;
+                        font-size: 15px;
+                        font-family: sans-serif;
+                        font-weight: lighter;">
+                Save
+            </button>
+            <button class="btn btn-lg btn-outline-dark text-uppercase mb-2" type="button" style="padding: 6px 18px 5px 18px;
+                        margin-top: 8px;
+                        font-size: 15px;
+                        font-family: sans-serif;
+                        font-weight: lighter;" onclick="closeModal1()">
+                Cancel
+            </button>
+        </div>
+
+        <div class="col-3" style="position: relative;">
+            <img asp-formaction="" class="userImage" id="imagePreview" width="100%" style="margin-top: 20px; height: 160px; border: solid;" />
+
+            @if (Model != null && Model.ImageUrl != null)
+            {
+                <input type="hidden" id="previousImageUrl" src="@Model.ImageUrl" />
+            }
+
+            <button type="button" class="btn btn-custom"
+                    onclick="discardImage()">
+                <i class="fas fa-trash-alt" style="color:brown;"></i>
+            </button>
+        </div>
+
+
+    </div>
+</form>
+@*         </div>
+    </div>
+</div> *@

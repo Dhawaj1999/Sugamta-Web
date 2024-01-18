@@ -12,9 +12,11 @@ using System.Text.Json;
 using System.Net.Http.Formatting;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
 using Sugamta.Web.Services;
 using Sugamta.Web.Models.UserDTOs;
+using System.Security.Cryptography;
+using System.Text;
+using Sugamta.Web.Models.PrimaryClientDTOs;
 
 namespace Sugamta.Web.Controllers
 {
@@ -25,7 +27,9 @@ namespace Sugamta.Web.Controllers
         private readonly IMailService _emailService;
         private readonly OtpService _otpService;
 
-        string baseURL = "https://localhost:7109/api/User";
+        public static readonly string encryptionKeyToRegister = "ThisIsASampleKey123!ThisIsASampleKey123!";
+
+        string baseURL = "https://localhost:7109/api/User/create-user";
 
         public HomeController(ILogger<HomeController> logger, IMailService emailService, OtpService otpService)
         {
@@ -41,13 +45,15 @@ namespace Sugamta.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Register(string uniqueCode)
+        public async Task<IActionResult> Register(string uniqueCode)
         {
             if (!string.IsNullOrEmpty(uniqueCode))
             {
                 using (var client = new HttpClient())
                 {
-                    string generatedLink = $"https://localhost:7246/Home/Register?uniqueCode={uniqueCode}";
+                    string decodedUniqueCode = Uri.UnescapeDataString(uniqueCode.Replace("%20", "+"));
+
+                    string generatedLink = $"https://localhost:7246/Home/Register?uniqueCode={decodedUniqueCode}";
 
                     string apiUrl = $"https://localhost:7109/api/LoginHistory/check-generated-link/{Uri.EscapeDataString(generatedLink)}";
 
@@ -55,11 +61,15 @@ namespace Sugamta.Web.Controllers
 
                     if (response.IsSuccessStatusCode)
                     {
-                        return View();
-                    } else
-                    {
-                        return NotFound("Link is expired");
-                    }
+                        string userEmail = Decrypt(Uri.UnescapeDataString(decodedUniqueCode.Replace(" ", "+")), encryptionKeyToRegister);
+                        var user = await GetUser(userEmail);
+                        PrimaryClientRegisterDto userEntity = new()
+                        {
+                            AgencyName = user.Name,
+                            AgencyEmail = userEmail
+                        };
+                        return View("RegisterWithLink", userEntity);
+                    } 
                 }
             }
 
@@ -67,10 +77,41 @@ namespace Sugamta.Web.Controllers
         }
 
 
+        //[HttpGet]
+        //public IActionResult GenerateRegistrationLink()
+        //{
+        //    string userEmail = HttpContext.Session.GetString("UserEmail");
+        //    string uniqueCode = Guid.NewGuid().ToString();
+
+        //    string registrationLink = $"https://localhost:7246/Home/Register?uniqueCode={uniqueCode}";
+
+        //    LinkGeneration linkGeneration = new()
+        //    {
+        //        RegistrationLink = registrationLink
+        //    };
+
+        //    var formData = new MultipartFormDataContent();
+
+        //    formData.Add(new StringContent(linkGeneration.RegistrationLink), "RegistrationLink");
+
+        //    using (var client = new HttpClient())
+        //    {
+        //        HttpResponseMessage response = client.PostAsync("https://localhost:7109/api/LoginHistory/generate-link", formData).GetAwaiter().GetResult();
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            return Json(new { RegistrationLink = registrationLink });
+        //        }
+        //    }
+
+        //    return null;
+        //}
+
         [HttpGet]
         public IActionResult GenerateRegistrationLink()
         {
-            string uniqueCode = Guid.NewGuid().ToString();
+            string userEmail = HttpContext.Session.GetString("UserEmail");
+            string uniqueCode = Encrypt(userEmail, encryptionKeyToRegister);
 
             string registrationLink = $"https://localhost:7246/Home/Register?uniqueCode={uniqueCode}";
 
@@ -94,6 +135,79 @@ namespace Sugamta.Web.Controllers
             }
 
             return null;
+        }
+
+        private string Encrypt(string plainText, string key)
+        {
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Key = GetValidKey(key, aesAlg.KeySize);
+                aesAlg.IV = new byte[16]; // Use a secure random IV for each encryption
+
+                // Generate a random nonce (unique code)
+                byte[] nonce = new byte[8]; // You can adjust the size as needed
+                using (var rng = new RNGCryptoServiceProvider())
+                {
+                    rng.GetBytes(nonce);
+                }
+
+                // Concatenate the nonce and email
+                string dataToEncrypt = Convert.ToBase64String(nonce) + plainText;
+
+                ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+
+                using (MemoryStream msEncrypt = new MemoryStream())
+                {
+                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+                    {
+                        swEncrypt.Write(dataToEncrypt);
+                    }
+
+                    return Convert.ToBase64String(msEncrypt.ToArray());
+                }
+            }
+        }
+
+        private string Decrypt(string cipherText, string key)
+        {
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Key = GetValidKey(key, aesAlg.KeySize);
+                aesAlg.IV = new byte[16]; // Use a secure random IV for each encryption
+
+                // Convert the base64 string to bytes
+                byte[] cipherBytes = Convert.FromBase64String(cipherText);
+
+                // Create a decryptor
+                ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+
+                using (MemoryStream msDecrypt = new MemoryStream(cipherBytes))
+                {
+                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                    using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                    {
+                        // Read the decrypted bytes from the decrypting stream
+                        string decryptedData = srDecrypt.ReadToEnd();
+
+                        // Extract the nonce and email
+                        byte[] nonceBytes = Convert.FromBase64String(decryptedData.Substring(0, 12)); // Adjust the length based on your nonce size
+                        string email = decryptedData.Substring(12);
+
+                        return email;
+                    }
+                }
+            }
+        }
+
+        private byte[] GetValidKey(string key, int keySize)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                byte[] keyBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(key));
+                Array.Resize(ref keyBytes, keySize / 8);
+                return keyBytes;
+            }
         }
 
 
@@ -208,9 +322,15 @@ namespace Sugamta.Web.Controllers
 
                                 var claims = jwtToken.Claims;
                                 string email = claims.First(c => c.Type == "email").Value;
+                                string role = claims.First(c => c.Type == "role").Value;
+                                //string name = claims.First(c => c.Type == "name").Value;
 
                                 HttpContext.Session.SetString("UserEmail", email);
-                                TempData["LoginSuccess"] = "Login Successfully";
+                                HttpContext.Session.SetString("BearerToken", token.ToString());
+                                HttpContext.Session.SetString("Role", role);
+
+                                //HttpContext.Session.SetString("UserName", name);
+                                // TempData["LoginSuccess"] = "Login Successfully";
 
                                 ViewData["Email"] = email;
 
@@ -224,7 +344,7 @@ namespace Sugamta.Web.Controllers
                             else
                             {
                                 //return new JsonResult(new { Error = "Error calling API" }) { StatusCode = 500 };
-                                TempData["Errormessage"] = "User Email and Password is not correct";
+                                TempData["Errormessage"] = "Email or Password is not correct";
                                 return RedirectToAction("Index", "Home");
                             }
                         }
@@ -252,6 +372,11 @@ namespace Sugamta.Web.Controllers
 
         public async Task<IActionResult> Otp(string email)
         {
+            //if (email == null)
+            //{
+            //    email = HttpContext.Session.GetString("UserEmail");
+            //}
+
             if (email != null)
             {
                 var otp = _otpService.GenerateOtp();
@@ -289,6 +414,25 @@ namespace Sugamta.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        //public async Task<IActionResult> VerifyOtp()
+        //{
+        //    return View();
+        //}
+
+        [HttpGet]
+        public async Task<IActionResult> ResendOtp(string email)
+        {
+            var user = await GetUser(email);
+
+            if (user != null)
+            {
+                //ViewData["QrCode"] = Convert.ToBase64String(_otpService.GenerateQrCode(user.OTP));
+                return View("VerifyOtp");
+            }
+
+            return RedirectToAction("Index");
+        }
+
         public async Task<IActionResult> VerifyOtp(string email)
         {
             var user = await GetUser(email);
@@ -305,12 +449,17 @@ namespace Sugamta.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> VerifyOtp(string email, string enteredOtp)
         {
+            if (email == null)
+            {
+                email = HttpContext.Session.GetString("UserEmail");
+            }
+
             var user = await GetUser(email);
 
             UserOtpDto userOtpDto = new()
             {
                 Email = user.Email,
-                OTP = enteredOtp
+                OTP = user.OTP
             };
 
             if(userOtpDto.Email == email && userOtpDto.OTP == enteredOtp)
@@ -334,9 +483,12 @@ namespace Sugamta.Web.Controllers
                         }
                     }
                 }
+            } else if(userOtpDto.OTP != enteredOtp)
+            {
+                TempData["Errormessage"] = "Incorrect OTP";
             }
 
-            return RedirectToAction("Index");
+            return View("VerifyOtp");
         }
 
         public IActionResult Privacy()
@@ -441,6 +593,8 @@ namespace Sugamta.Web.Controllers
         {
             try
             {
+                userDetails.Email = HttpContext.Session.GetString("UserEmail");
+
                 var existingUser = await GetUserDetailsForCreationOrUpdate(userDetails.Email);
 
                 var formData = new MultipartFormDataContent();
@@ -617,6 +771,11 @@ namespace Sugamta.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult HomePage()
+        {
+            return View();
         }
     }
 }

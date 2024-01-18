@@ -1,0 +1,84 @@
+﻿<style>
+    .btn-secondary:hover {
+        color: red;
+    }
+
+   
+</style>
+
+
+<div id="deleteUserModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered custom-modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeDeleteModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body custom-modal-body">
+                <p>Are you sure you want to delete this user?</p>
+                <form id="deleteUserForm" asp-action="Delete" asp-controller="UserEntity" method="post">
+                    <input type="hidden" id="deleteEmail" name="email" />
+                    
+                </form>
+            </div>
+            <!---->
+            <div class="modal-footer">
+               @*  <button type="button" class="btn btn-danger" onclick="submitDeleteUserForm()">Delete</button> *@
+                <button type="submit" class="btn btn-lg btn-danger btn-login text-uppercase mb-2" onclick="submitDeleteUserForm()" style="padding: 6px 18px 5px 18px;
+                       
+                        font-size: 15px;
+                        font-family: sans-serif;
+                        font-weight: lighter;" >
+                    Delete
+                </button>
+                @* <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="closeDeleteModal()" style="margin-right:318px">Cancel</button> *@
+                <button class="btn btn-lg btn-outline-dark text-uppercase mb-2" data-dismiss="modal" type="button" onclick="closeDeleteModal()" style="padding: 6px 18px 5px 18px;
+                        margin-right:267px;
+                        font-size: 15px;
+                        font-family: sans-serif;
+                        font-weight: lighter;">
+                    Cancel
+                </button>
+              
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+
+    function deleteUserData(email) {
+        $('#deleteEmail').val(email);
+        $('#deleteUserModal').modal('show');
+    }
+ 
+    function submitDeleteUserForm() {
+        $.ajax({
+            url: '/UserEntity/Delete',
+            type: 'POST',
+            data: $('#deleteUserForm').serialize(),
+            success: function (data) {
+                debugger;
+                console.log('User deleted successfully');
+                $('#deleteUserModal').modal('hide');
+                
+            },
+            error: function (error) {
+                console.error('Error deleting user:', error);
+            }
+        });
+        location.reload();
+    }
+ 
+    function closeDeleteModal() {
+        $('#deleteUserModal').modal('hide');
+    }
+
+
+    
+
+</script>

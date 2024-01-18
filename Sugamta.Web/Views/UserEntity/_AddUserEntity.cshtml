@@ -1,0 +1,62 @@
+﻿@model UserEntity
+
+@* <div id="profilePopup" class="modal fade profileform">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content pl-4 pr-4"> *@
+            <!-- Popup content goes here -->
+            <form asp-controller="Home" asp-action="AddOrUpdateUserDetails" method="post" enctype="multipart/form-data">
+                <div class="modal-header" style="padding: 16px 0 !important;">
+                    <h5 class="modal-title">Create User</h5>
+                    <button type="button" class="close" style="color: red;" data-dismiss="modal" onclick="closeModal1()">&times;</button>
+                </div>
+                <div class="row">
+                    <div class="modal-body col-12">
+                        <!-- Your profile content goes here -->
+                        <div class="form-floating mb-2">
+                            <label for="floatingInput">Email</label>
+                            <input id="emailInput" asp-for="Email" type="email" class="form-control input-sm" id="floatingInput" placeholder="examp@gmail.com">
+                        </div>
+
+                        <div class="form-floating mb-2">
+                            <label for="floatingInput">Name</label>
+                            <input id="addressInput" asp-for="Name" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">
+                        </div>
+
+                        <div class="form-floating mb-2">
+                            <label for="floatingInput">Password</label>
+                            <input id="cityInput" asp-for="Password" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">
+                        </div>
+
+                        <div class="form-floating mb-2">
+                            <label for="floatingInput">Role Type</label>
+                <select id="roleInput" asp-for="RoleId" class="form-control form-select form-select-sm" aria-label="small select example" style="width: 65%; margin-left: 151px; z-index: 1000;">
+                                <option selected>--Select Role--</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Agent</option>
+                                <option value="3">Investor</option>
+                                <option value="4">Client</option>
+                                <option value="5">Agency</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-lg btn-primary btn-login text-uppercase mb-2" style="padding: 6px 18px 5px 18px;
+                        margin-top: 8px;
+                        font-size: 15px;
+                        font-family: sans-serif;
+                        font-weight: lighter;">
+                            Save
+                        </button>
+                        <button class="btn btn-lg btn-outline-dark text-uppercase mb-2" type="button" style="padding: 6px 18px 5px 18px;
+                        margin-top: 8px;
+                        font-size: 15px;
+                        font-family: sans-serif;
+                        font-weight: lighter;" onclick="closeModal1()">
+                            Cancel
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+@*         </div>
+    </div>
+</div> *@

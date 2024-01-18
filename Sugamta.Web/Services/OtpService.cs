@@ -6,9 +6,15 @@ namespace Sugamta.Web.Services
     {
         public string GenerateOtp()
         {
-            var generator = new Random();
-            return generator.Next(100000, 999999).ToString();
+            const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+
+            string otp = new string(Enumerable.Repeat(characters, 4)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+
+            return otp;
         }
+
 
         public byte[] GenerateQrCode(string otp)
         {

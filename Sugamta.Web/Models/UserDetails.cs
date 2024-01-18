@@ -16,7 +16,9 @@ namespace Sugamta.Web.Models
         public string PhoneNumber { get; set; }
         public string AlternatePhoneNumber { get; set; }
         public DateTime CreationDate { get; set; }
-        public DateTime UpdationDate { get; set; }      
+        public DateTime UpdationDate { get; set; }
+        public string? OTP { get; set; }
+        public string? Name { get; set; }
     }
 
 

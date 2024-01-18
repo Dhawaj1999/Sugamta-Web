@@ -1,5 +1,13 @@
 ﻿@model Sugamta.Web.Models.UserDTOs.UserOtpDto
 
+@{
+    var userEmail = Context.Session.GetString("UserEmail");
+}
+
+<script>
+    var userEmail = '@userEmail';
+</script>
+
 @* <h2>Verify OTP</h2> *@
 @* <p>Please enter the OTP sent to your email.</p> *@
 
@@ -45,17 +53,20 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-9 col-lg-8 mx-auto">
-                            <h3 class="login-heading mb-4">Please enter the OTP sent to your email!</h3>
+                            <h3 class="login-heading mb-4">Please enter the OTP sent to your Email!</h3>
 
                             <!-- Sign In Form -->
                             <form asp-controller="Home" asp-action="VerifyOtp" method="post">
                                 <p hidden>Email: @ViewData["Email"]</p>
                                 <input asp-for="Email" type="hidden" name="email" value="@ViewData["Email"]" />
                                 <div class="form-floating mb-3">
-                                    <input asp-for="OTP" type="text" name="enteredOtp" class="form-control" id="floatingPassword" placeholder="123123">
+                                    <input asp-for="OTP" type="text" name="enteredOtp" class="form-control" id="floatingPassword" placeholder="123123" required>
                                     <label for="enteredOtp" for="floatingInput">OTP</label>
                                 </div>
-
+                                <div style="display: flex; justify-content:space-between">
+                                    <p id="otp-timer" style="font-size: 14px; display: inline-block;">Your OTP will expire in <span id="minutes">10</span>:<span id="seconds">00</span> Minutes</p>
+                                    <button id="resend" onclick="VerifyOtp();" style="visibility: hidden; font-size: 14px; display: inline-block; background: none; border: none; padding-right: 5px; cursor: pointer; color: #0a58ca;">Resend</button>
+                                </div>
                                 <div class="d-grid">
                                     <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Verify OTP</button>
                                    
@@ -68,6 +79,105 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    // function VerifyOtp() {
+    //     localStorage.removeItem('otpStartTime');
+    //     var tenMinutesLater = new Date(new Date().getTime() + 10 * 60 * 1000);
+    //     localStorage.setItem('otpStartTime', tenMinutesLater.getTime());
+
+    //     location.reload();
+
+    //     $.ajax({
+    //         url: '/Home/Otp',
+    //         type: 'GET',
+    //         data: { email: userEmail },
+    //         success: function (data) {
+    //             console.log("otp resent");
+    //         },
+    //         error: function (error) {
+    //             console.error(error);
+    //         }
+    //     });
+    // }
+
+    // var isFirstLoad = sessionStorage.getItem('isFirstLoad');
+
+    // if (!isFirstLoad) {
+    //     sessionStorage.setItem('isFirstLoad', 'true');
+    //     var tenMinutesLater = new Date(new Date().getTime() + 10 * 60 * 1000);
+    //     localStorage.setItem('otpStartTime', tenMinutesLater.getTime());
+    // } else {
+    //     var storedStartTime = localStorage.getItem('otpStartTime');
+    //     var tenMinutesLater = new Date(parseInt(storedStartTime, 10));
+    // }
+
+    // var x = setInterval(function () {
+    //     var now = new Date().getTime();
+    //     var distance = tenMinutesLater - now;
+
+    //     if (distance <= 0) {
+    //         clearInterval(x);
+    //         document.getElementById("otp-timer").innerHTML = "Your OTP is Expired";
+    //         localStorage.removeItem('otpStartTime');
+    //     } else {
+    //         if (distance <= 8 * 60 * 1000) {
+    //             document.getElementById("resend").style.visibility = "visible";
+    //         }
+    //         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    //         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    //         minutes = minutes < 10 ? "0" + minutes : minutes;
+    //         seconds = seconds < 10 ? "0" + seconds : seconds;
+
+    //         document.getElementById("minutes").innerHTML = minutes;
+    //         document.getElementById("seconds").innerHTML = seconds;
+    //     }
+    // }, 1000);
+
+    var tenMinutesLater = new Date(new Date().getTime() + 10 * 60 * 1000);
+    var x = setInterval(function () {
+        var now = new Date().getTime();
+        var distance = tenMinutesLater - now;
+
+        if (distance <= 0) {
+            clearInterval(x);
+            document.getElementById("otp-timer").innerHTML = "Your OTP is Expired";
+        } else {
+            if (distance <= 8 * 60 * 1000) { 
+                document.getElementById("resend").style.visibility = "visible";
+            }
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            document.getElementById("minutes").innerHTML = minutes;
+            document.getElementById("seconds").innerHTML = seconds;
+        }
+    }, 1000);
+
+    function VerifyOtp() {
+        location.reload();
+        $.ajax({
+            url: '/Home/Otp',
+            type: 'GET',
+            data: { email: userEmail },
+            success: function (data) {
+                //debugger;
+                
+                console.log("otp resent");
+                @*  $('#navProfileImage').attr('src', 'data:image/png;base64,' + data); *@
+                },
+            error: function (error) {
+                console.error('Failed to retrieve and display image:', error);
+            }
+        });
+        //location.reload();
+    }
+ </script>
 
 <script src="~/js/test.js"></script>
 
