@@ -1,0 +1,82 @@
+﻿@model Sugamta.Web.Models.PrimaryClientDTOs.PrimaryClientRegisterDto
+
+@* <div id="profilePopup" class="modal fade profileform">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content pl-4 pr-4"> *@
+<!-- Popup content goes here -->
+<form asp-controller="PrimaryClient" asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="modal-header">
+        <h5 class="modal-title">Primary Client</h5>
+        <button type="button" class="close" style="color: red;" data-dismiss="modal" onclick="closeAddModalPrimaryClient()">&times;</button>
+    </div>
+    <div class="row">
+        <div class="modal-body col-9">
+            <!-- Your profile content goes here -->
+            <div class="form-floating mb-2">
+                <label  for="floatingInput">Email</label>
+                <input id="emailInput" asp-for="PrimaryClientEmail"  type="email" class="form-control input-sm" id="floatingInput" placeholder="examp@gmail.com" required>
+            </div>
+
+            <div class="form-floating mb-2">
+                <label for="floatingInput">Name</label>
+                <input id="nameInput" asp-for="PrimaryClientName" type="text" class="form-control input-sm" id="floatingInput" placeholder="name" required>
+            </div>
+
+            <div class="form-floating mb-2">
+                <label for="floatingInput">Password</label>
+                <input id="addressInput" asp-for="Password" type="text" class="form-control input-sm" id="floatingInput" placeholder="name" required>
+            </div>
+
+            <div class="form-floating mb-2">
+                <label for="floatingInput">AgencyEmail</label>
+                <input id="agencyEmailInput" asp-for="AgencyEmail" type="email" class="form-control input-sm" id="floatingInput" placeholder="examp@gmail.com" required>
+            </div>
+
+
+            <div class="form-floating mb-3">
+                <label for="floatingInput">Role Type</label>
+                <select asp-for="RoleId" type="text" class="form-control form-select form-select-sm " id="floatingInput" aria-label="small select example" style="width: 359px; margin-left: 151px;">
+                    <option selected value="6">Primary Client</option>
+                </select>               
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" value="" id="rememberPasswordCheck">
+                <label class="form-check-label" for="rememberPasswordCheck">
+                    Remember password
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-lg btn-primary btn-login text-uppercase mb-2" style="padding: 6px 18px 5px 18px;
+                        margin-top: 8px;
+                        font-size: 15px;
+                        font-family: sans-serif;
+                        font-weight: lighter;">
+                Save
+            </button>
+            <button class="btn btn-lg btn-outline-dark text-uppercase mb-2" type="button" style="padding: 6px 18px 5px 18px;
+                        margin-top: 8px;
+                        font-size: 15px;
+                        font-family: sans-serif;
+                        font-weight: lighter;" onclick="closeAddModalPrimaryClient()">
+                Cancel
+            </button>
+        </div>
+
+
+
+    </div>
+</form>
+@*         </div>
+    </div>
+</div> *@
+
+<script>
+
+    function closeAddModalPrimaryClient() {
+        // Assuming you're using jQuery for Bootstrap modal
+        $('#primaryClientAddModal').modal('hide');
+    }
+
+
+
+</script>

@@ -132,7 +132,7 @@
         <div class="position-sticky">
             <div class="list-group list-group-flush mx-3 mt-4">
                 <a href="#" class="list-group-item list-group-item-action py-2 ripple active dropdown-toggle" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa-solid fa-people-roof fa-fw me-3"></i><span>Agency</span><i class="bi bi-chevron-down float-end"></i>
+                    <i class="fa-solid fa-people-roof fa-fw me-3"></i><span>Agency</span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="#">Agency</a>
@@ -160,17 +160,27 @@
                 UserManagament
                 </a>
                 </div> *@
-                <a href="#" class=" dropdown-toggle" id="userManagamentDropdopdown" role="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left: 17px;
+
+                @* @if (Context.Session.GetString("Role") == "Admin")
+                { *@
+                    <a href="#" class=" dropdown-toggle" id="userManagamentDropdopdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left: 17px;
            margin-top: 7px;
            color: #695f5f">
-                    <i class="fa fa-gear fa-fw me-3" style="font-size:17px"></i><span>Settings</span>
-                </a>
+                        <i class="fa fa-gear fa-fw me-3" style="font-size:17px"></i><span>Settings</span>
+                    </a>
+                @* } *@
+
+      
 
                 <div class="dropdown-menu" aria-labelledby="userManagamentDropdopdown">
                     <button onclick="renderUserManagementPartialView();" class="dropdown-item">
                         User Management
                     </button>
                 </div>
+
+                <button onclick="renderPrimaryClientPartialView();" class="list-group-item list-group-item-action py-2 ripple">
+                    <i class="fa-solid fa-person fa-fw me-2"></i><span>PrimaryClients</span>
+                </button>
 
             </div>
         </div>
@@ -277,20 +287,19 @@
 
 
                             <div class="form-floating mb-2">
-                                <label for="floatingInput">Email</label>
-                                <input id="emailInput" asp-for="Email" type="email" class="form-control input-sm" id="floatingInput" placeholder="examp@gmail.com" disabled>
-
+                                <label hidden for="floatingInput">Email</label>
+                                <input id="emailInput" asp-for="Email" hidden type="email" class="form-control input-sm" id="floatingInput" placeholder="examp@gmail.com" disabled>
 
                             </div>
 
                             <div class="form-floating mb-2">
                                 <label for="floatingInput">Address</label>
-                                <input id="addressInput" asp-for="Address" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">                           
-                        </div>
-                        <div class="form-floating mb-2">
+                                <input id="addressInput" asp-for="Address" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">
+                            </div>
+                            <div class="form-floating mb-2">
                                 <label for="floatingInput">City</label>
-                                <input id="cityInput" asp-for="City" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">                           
-                        </div>
+                                <input id="cityInput" asp-for="City" type="text" class="form-control input-sm" id="floatingInput" placeholder="name">
+                            </div>
 
                             <div class="form-floating mb-3">
                                 <label for="stateInput">State</label>
@@ -314,63 +323,60 @@
                             </div>
 
 
-                         <div class="form-floating mb-2">
+                            <div class="form-floating mb-2">
                                 <label for="floatingInput">Phone Number</label>
-                                <input id="phoneInput" asp-for="PhoneNumber" type="number" class="form-control input-sm" id="floatingInput" placeholder="12345">                            
+                                <input id="phoneInput" asp-for="PhoneNumber" type="number" class="form-control input-sm" id="floatingInput" placeholder="12345">
 
-                        </div>
-                        <div class="form-floating mb-2">
+                            </div>
+                            <div class="form-floating mb-2">
                                 <label for="floatingInput">Alternate PhoneNo</label>
                                 <input id="alternatePhoneInput" asp-for="AlternatePhoneNumber" type="number" class="form-control input-sm" id="floatingInput" placeholder="123..">
-                           
-                        </div>
+
+                            </div>
 
                             <div class="form-floating mb-2">
                                 <label>Profile Picture:</label>
                                 <div class="input-group" style="width: 92%;">
-                                    <input type="file" id="formFile" class="form-control" asp-for="formFile" onchange="previewImage(this)" >                                   
+                                    <input type="file" id="formFile" class="form-control" asp-for="formFile" onchange="previewImage(this)">
                                 </div>
                             </div>
 
-                        <button type="submit" class="btn btn-lg btn-primary btn-login text-uppercase mb-2" style="padding: 6px 18px 5px 18px;
+                            <button type="submit" class="btn btn-lg btn-primary btn-login text-uppercase mb-2" style="padding: 6px 18px 5px 18px;
                         margin-top: 8px;
                         font-size: 15px;
                         font-family: sans-serif;
                         font-weight: lighter;">
-                            Save
-                        </button>
-                        <button class="btn btn-lg btn-outline-dark text-uppercase mb-2" type="button" style="padding: 6px 18px 5px 18px;
+                                Save
+                            </button>
+                            <button class="btn btn-lg btn-outline-dark text-uppercase mb-2" type="button" style="padding: 6px 18px 5px 18px;
                         margin-top: 8px;
                         font-size: 15px;
                         font-family: sans-serif;
                         font-weight: lighter;" onclick="closeModal1()">
-                            Cancel
-                        </button>
-                    </div>
+                                Cancel
+                            </button>
+                        </div>
 
                         <div class="col-3" style="position: relative;">
-                            <img asp-formaction="" class="userImage" id="imagePreview userImage" width="100%" style="margin-top: 20px; height: 160px; border: solid;" />
+                            <img asp-formaction="" class="userImage" id="imagePreview" width="100%" style="margin-top: 20px; height: 160px; border: solid;" />
 
                             @if (Model != null && Model.ImageUrl != null)
                             {
                                 <input type="hidden" id="previousImageUrl" src="@Model.ImageUrl" />
                             }
 
-                            <button type="button" class="btn btn-custom" 
-                                onclick="discardImage()">
+                            <button type="button" class="btn btn-custom"
+                                    onclick="discardImage()">
                                 <i class="fas fa-trash-alt" style="color:brown;"></i>
                             </button>
                         </div>
-                            
-                        
-                </div>
-              </form>
+
+
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
-                 
-
 
             </ul>
         </div>
@@ -378,17 +384,59 @@
     </nav>
     <!-- Navbar -->
 </header>
+
 <!--Main Navigation-->
 <!--Main layout-->
 <main style="margin-top: 58px; margin-left: 250px;">
-    <div class="container pt-4">
-        <div id="foo-view" data-url="@Url.Action(action: "GetAgent", controller: "Agent")"></div>
-        <div id="add-view" data-url="@Url.Action(action: "InsertAgent", controller: "Agent")"></div>
-        <div id="update-view" data-url="@Url.Action(action: "UpdateAgent", controller: "Agent")"></div>
-        <div id="delete-view" data-url="@Url.Action(action: "DeleteAgent", controller: "Agent")"></div>
-        <div id="userEntityDetailsContainer"></div>
-
-
+    <div class="container pt-1">
+        <!-- User Grid -->
+        <div style="display: none;" id="user-grid-view"></div>
+        <!-- Add User Pop up -->
+        <div class="modal fade" id="userAddModal" tabindex="-1" role="dialog" aria-labelledby="userAddModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content pl-4 pr-4">
+                    <div class="modal-body" style="padding: 0;">
+                        <div id="user-add-view"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Edit User Pop up -->
+        <div class="modal fade" id="userEditModal" tabindex="-1" role="dialog" aria-labelledby="userAddModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content pl-4 pr-4">
+                    <div class="modal-body" style="padding: 0;">
+                      <div id="user-edit-view"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Primary Client Grid-->
+        <div style="display: none;" id="primaryClient-grid-view"></div>
+         <!-- Add Primary Client Pop up -->
+        <div class="modal fade" id="primaryClientAddModal" tabindex="-1" role="dialog" aria-labelledby="primaryClientAddModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content pl-4 pr-4">
+                    <div class="modal-body" style="padding: 0;">
+                        <div id="primaryClient-add-view"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Primary Pop up -->
+    <div class="modal fade" id="primaryClientEditModal" tabindex="-1" role="dialog" aria-labelledby="primaryClientAddModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content pl-4 pr-4">
+                    <div class="modal-body" style="padding: 0;">
+                      <div id="primaryClient-edit-view"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 <!--Main layout-->
@@ -421,11 +469,103 @@
 
 </style>
 
+<script src="~/js/UserEntityDetails.js"></script>
+<script src="~/js/PrimaryClientDetails.js"></script>
 <script>
-function renderUserManagementPartialView() {  
-        $.get('@Url.Action("UserEntityDetails", "UserEntity")', function (data) {
+    function renderPrimaryClientPartialView(){
+        $.ajax({
+            url: '/PrimaryClient/GetPrimaryClient',
+            type: 'GET',
+            success: function (partialView) {
+                $("#primaryClient-grid-view").html(partialView);
+                loadDataClientTable();
+                $("#user-grid-view").css("display", "none");
+                $("#primaryClient-grid-view").css("display", "block");
+            },
+            error: function (error) {
+                console.error('Error fetching PrimaryClient partial view:', error);
+            }
+        });
+    }
 
-            $('#userEntityDetailsContainer').html(data);
+    function renderPrimaryClientAddPartialView() {
+        $.ajax({
+            url: '/PrimaryClient/Create',
+            type: 'GET',
+            success: function (partialView) {
+                $("#primaryClient-add-view").html(partialView);
+                //$("#user-add-view").css("display", "block");
+                $('#primaryClientAddModal').modal('show');
+            },
+            error: function (error) {
+                console.error('Error fetching PrimaryClient partial view:', error);
+            }
+        });
+    }
+
+    function renderPrimaryClientEditPartialView(email) {
+        $.ajax({
+            url: '/PrimaryClient/Edit',
+            type: 'GET',
+            data: { email: email },
+            success: function (partialView) {
+                console.log(partialView);
+                debugger;
+                $("#primaryClient-edit-view").html(partialView);
+                displayImageForPrimaryClient();
+                GetCountryListForPrimaryClient();
+                GetStateListForPrimaryClient();   
+                $('#primaryClientEditModal').modal('show');
+            },
+            error: function (error) {
+                console.error('Error fetching PrimaryClient partial view:', error);
+            }
+        });
+    }
+
+    function renderUserManagementPartialView() {
+        $.ajax({
+            url: '/UserEntity/UserEntityDetails',
+            type: 'GET',
+            success: function (partialView) {
+                $("#user-grid-view").html(partialView);
+                loadDataTable();
+                $("#primaryClient-grid-view").css("display", "none");
+                $("#user-grid-view").css("display", "block");
+            },
+            error: function (error) {
+                console.error('Error fetching UserEntityDetails partial view:', error);
+            }
+        });
+    }
+
+    function renderUserManagementAddPartialView() {
+        $.ajax({
+            url: '/UserEntity/Create',
+            type: 'GET',
+            success: function (partialView) {
+                $("#user-add-view").html(partialView);
+                //$("#user-add-view").css("display", "block");
+                $('#userAddModal').modal('show');
+            },
+            error: function (error) {
+                console.error('Error fetching UserEntityDetails partial view:', error);
+            }
+        });
+    }
+
+    function renderUserManagementEditPartialView(email) {
+        $.ajax({
+            url: '/UserEntity/Edit',
+            type: 'GET',
+            data: { email : email},
+            success: function (partialView) {
+                $("#user-edit-view").html(partialView);
+                $('#userEditModal').modal('show');
+            },
+            error: function (error) {
+                console.error('Error fetching UserEntityDetails partial view:', error);
+            }
         });
     }
     
@@ -464,10 +604,11 @@ function renderUserManagementPartialView() {
         $("#copyButton").click(function () {
             copyToClipboard();
         });
-        displayImageOnNav();
-    });
 
-    function displayImageOnNav() {
+        @* displayImageOnNav(); *@
+    }); 
+
+    @* function displayImageOnNav() {
         $.ajax({
             url: '/Home/GetProfileImage', 
             type: 'GET',
@@ -479,7 +620,16 @@ function renderUserManagementPartialView() {
                 console.error('Failed to retrieve and display image:', error);
             }
         });
+    } *@
+
+     function updateNavProfileImage(data) {
+        $('#navProfileImage').attr('src', 'data:image/png;base64,' + data);
     }
+    // Function to be called when the document is ready
+    $(document).ready(function () {
+        // Call the displayImage function when the document is ready
+        displayImage();
+    });
 
     function displayImage() {
         $.ajax({
@@ -487,8 +637,10 @@ function renderUserManagementPartialView() {
             type: 'GET',
             data: { email: userEmail },
             success: function (data) {
-                $('#userImage').attr('src', 'data:image/png;base64,' + data);
-                $('#navProfileImage').attr('src', 'data:image/png;base64,' + data);
+                //debugger;
+                $('.userImage').attr('src', 'data:image/png;base64,' + data);
+                    updateNavProfileImage(data);
+               @*  $('#navProfileImage').attr('src', 'data:image/png;base64,' + data); *@
             },
             error: function (error) {
                 console.error('Failed to retrieve and display image:', error);
@@ -678,7 +830,7 @@ function renderUserManagementPartialView() {
     </script>
 }
 
-@if (TempData["LoginSuccess"] != null)
+@* @if (TempData["LoginSuccess"] != null)
 {
     <script src="/lib/jquery/dist/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -690,5 +842,65 @@ function renderUserManagementPartialView() {
             "timeOut": 3000
         };
         toastr.success('@TempData["LoginSuccess"]',  { "iconClass": 'toast-success' });
+    </script>
+} *@
+
+@if (TempData["PrimaryClientMessage"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "positionClass": "toast-top-right", // Adjust the position as needed
+            "preventDuplicates": true,
+            "closeButton": true,
+            "timeOut": 3000
+        };
+        toastr.success('@TempData["PrimaryClientMessage"]', { "iconClass": 'toast-success' });
+    </script>
+}
+
+@if (TempData["UpdatePrimaryClientDetails"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "positionClass": "toast-top-right", // Adjust the position as needed
+            "preventDuplicates": true,
+            "closeButton": true,
+            "timeOut": 3000
+        };
+        toastr.success('@TempData["UpdatePrimaryClientDetails"]', { "iconClass": 'toast-success' });
+    </script>
+}
+
+@if (TempData["SavePrimaryClientDetails"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "positionClass": "toast-top-right", // Adjust the position as needed
+            "preventDuplicates": true,
+            "closeButton": true,
+            "timeOut": 3000
+        };
+        toastr.success('@TempData["SavePrimaryClientDetails"]', { "iconClass": 'toast-success' });
+    </script>
+}
+
+@if (TempData["DeletePrimaryClientDetails"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "positionClass": "toast-top-right", // Adjust the position as needed
+            "preventDuplicates": true,
+            "closeButton": true,
+            "timeOut": 3000
+        };
+        toastr.success('@TempData["DeletePrimaryClientDetails"]', { "iconClass": 'toast-success' });
     </script>
 }
